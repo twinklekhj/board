@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: board
+  # DataSource Configuration
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/board
+    username: postgres
+    password: qwe123!@#
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+  devtools:
+    restart:
+      enabled: true
+server:
+  port: 8080
+logging:
+  level:
+    org.springframework.web: debug
+
+jwt:
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
