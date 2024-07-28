@@ -3,13 +3,21 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './pages/index';
 import reportWebVitals from './reportWebVitals';
+import {store} from "./store";
+import {Provider} from "react-redux";
 
+import '@Fonts/notokr/notokr.css'
+import '@Fonts/default.css'
+import '@Style/default.css'
+import '@Style/mobile.css'
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+      <Provider store={store}>
+          <App />
+      </Provider>
   </React.StrictMode>
 );
 
