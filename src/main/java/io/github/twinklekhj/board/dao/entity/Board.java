@@ -23,8 +23,9 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BOARD_GENERATOR")
     private Long id;
 
-    @Column(name = "member_id")
-    private Long memberId;
+    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
 
     @Column(name = "title", length = 100)
     @Comment("제목")
@@ -37,13 +38,20 @@ public class Board {
 
     @Column(name = "hits")
     @Comment("조회수")
-    private Integer hits;
+    @Builder.Default
+    private Integer hits = 0;
 
+    @Column(name = "is_hide")
+    @Comment("비공개")
+    @Builder.Default
+    private Boolean hide = false;
+
+    @Builder.Default
     @Column(name = "create_date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime createDate;
+    private LocalDateTime createDate = LocalDateTime.now();
 
     @Column(name = "edit_date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)

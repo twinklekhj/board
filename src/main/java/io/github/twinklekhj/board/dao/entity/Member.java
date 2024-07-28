@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import io.github.twinklekhj.board.login.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USER_GENERATOR")
-    private Long recKey;
+    private Long id;
 
     @Column(length= 20, unique = true)
     @NonNull
@@ -39,7 +40,12 @@ public class Member {
 
     @Column
     @Builder.Default
-    private boolean enabled = false;
+    private boolean enabled = true;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private Role role = Role.USER;
 
     @Column(name = "failure_cnt")
     @Builder.Default

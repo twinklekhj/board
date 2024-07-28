@@ -4,8 +4,8 @@ spring:
   # DataSource Configuration
   datasource:
     url: jdbc:postgresql://127.0.0.1:5432/board
-    username: postgres
-    password: qwe123!@#
+    username: test
+    password: 1234
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -13,6 +13,8 @@ spring:
   devtools:
     restart:
       enabled: true
+  mvc:
+    static-path-pattern: /**
 server:
   port: 8080
 logging:
@@ -20,4 +22,9 @@ logging:
     org.springframework.web: debug
 
 jwt:
-  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+  authorize-header: Authorization
+  authorize-key: auth
+  bearer-type: Bearer
+  # mili-seconds: 60 * 30 * 1000
+  token-expire-time: 1800000
+  secret-key: GGNepulWYYV92qf3OQtwKh2TZLtVaE1a6NARvsSn53II41QC6tEAnJZgU7UAM1rAlLUvOVvcoArTlMvpzBhllw==
