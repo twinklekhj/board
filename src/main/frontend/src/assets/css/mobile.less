@@ -1,0 +1,44 @@
+@screen-tablet-big: 1024px;
+@screen-tablet: 768px;
+@screen-mobile: 480px;
+
+@media (max-width: @screen-tablet-big) {
+  #root:has(> .login-container) {
+    .login-container {
+      .login-illustration {
+        width: 100%;
+
+        & img {
+          width: 90%;
+          max-height: 50%;
+        }
+      }
+      form {
+        width: 100%;
+      }
+      .login-form {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: fit-content;
+        max-width: 90%;
+        height: fit-content;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 1px 1px 1.5rem rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+}
+
+@media (max-width: @screen-tablet) {
+  #root:has(> .login-container) {
+    .login-container {
+      .login-illustration {
+        padding: 10% 0;
+      }
+    }
+  }
+}

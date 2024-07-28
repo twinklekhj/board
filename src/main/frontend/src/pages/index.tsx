@@ -1,27 +1,13 @@
-import React, {useEffect} from 'react';
+import React from 'react';
+import TokenBoundary from "@Components/TokenBoundary";
+import BoardPage from "./board/BoardPage";
 
-const MainApp = () => {
-    const [time, setTime] = React.useState("");
-    useEffect(() => {
-        fetch("/api/time", {
-            method: "GET",
-        })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return res.text();
-            })
-            .then(res => {
-                setTime(res)
-            })
-            .catch(err => console.error(err));
-    }, [])
+const App = () => {
     return (
-        <div>
-            Hi, Server time is {time}
-        </div>
+        <TokenBoundary>
+            <BoardPage />
+        </TokenBoundary>
     );
 };
 
-export default MainApp;
+export default App;
