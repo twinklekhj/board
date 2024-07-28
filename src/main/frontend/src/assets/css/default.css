@@ -33,6 +33,29 @@ h6 {
   margin: 0;
   padding: 0;
 }
+h1 {
+  font-size: var(--fs-1);
+}
+h2 {
+  font-size: var(--fs-2);
+}
+h3 {
+  font-size: var(--fs-3);
+}
+h4 {
+  font-size: var(--fs-4);
+}
+h5 {
+  font-size: var(--fs-5);
+}
+h6 {
+  font-size: var(--fs-6);
+}
+.wrapper {
+  width: 1520px;
+  max-width: 90%;
+  margin: 0 auto;
+}
 div,
 form,
 section,
@@ -67,6 +90,27 @@ button,
   outline: none;
   border-radius: 0.5rem;
   cursor: pointer;
+}
+table {
+  margin-top: 1rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+table tr {
+  border-top: solid 1px;
+  border-bottom: solid 1px;
+}
+table th {
+  text-align: left;
+}
+table th,
+table td {
+  padding: 0.5rem;
+  border-right: solid 1px;
+}
+table th:first-child,
+table td:first-child {
+  border-left: solid 1px;
 }
 #root:has(> .login-container) .login-container {
   display: flex;
@@ -121,5 +165,16 @@ button,
   border-radius: 0.5rem;
   border: none;
   outline: none;
+}
+.loading-container {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+}
+.loading-container .loading-spinner {
+  margin-left: 0.5rem;
 }
 /*# sourceMappingURL=default.css.map */

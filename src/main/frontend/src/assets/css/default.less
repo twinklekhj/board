@@ -10,6 +10,7 @@
   --color: #333;
   --color-primary: #136bc9;
 }
+
 html, body, #root {
   height: 100%;
   width: 100%;
@@ -19,37 +20,76 @@ html, body, #root {
   font-size: var(--fs-6);
   color: var(--color);
 }
+
 body {
   &.swal2-height-auto {
     height: 100% !important;
   }
 }
+
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
 }
+
+h1 {
+  font-size: var(--fs-1);
+}
+
+h2 {
+  font-size: var(--fs-2);
+}
+
+h3 {
+  font-size: var(--fs-3);
+}
+
+h4 {
+  font-size: var(--fs-4);
+}
+
+h5 {
+  font-size: var(--fs-5);
+}
+
+h6 {
+  font-size: var(--fs-6);
+}
+
+.wrapper {
+  width: 1520px;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
 div, form, section, header, footer {
   box-sizing: border-box;
 }
+
 input {
   border: none;
   outline: none;
 }
+
 .form-control {
   width: 100%;
 }
+
 .input-group {
   padding: 0.8rem 1rem;
   border-radius: 0.5rem;
+
   & label {
     min-width: 50px;
     font-size: var(--fs-7);
   }
+
   & .form-control {
     flex: 1;
     background-color: transparent;
   }
 }
+
 button, .btn {
   width: 100%;
   padding: 0.8rem 1rem;
@@ -58,6 +98,31 @@ button, .btn {
   border-radius: 0.5rem;
   cursor: pointer;
 }
+
+table {
+  margin-top: 1rem;
+  width: 100%;
+  border-collapse: collapse;
+
+  & tr {
+    border-top: solid 1px;
+    border-bottom: solid 1px;
+  }
+
+  & th {
+    text-align: left;
+  }
+
+  & th, td {
+    padding: 0.5rem;
+    border-right: solid 1px;
+
+    &:first-child {
+      border-left: solid 1px;
+    }
+  }
+}
+
 // login page
 #root {
   &:has(> .login-container) {
@@ -79,6 +144,7 @@ button, .btn {
         align-items: center;
 
       }
+
       .login-form {
         width: 45%;
         height: 100%;
@@ -122,5 +188,18 @@ button, .btn {
         }
       }
     }
+  }
+}
+
+.loading-container {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+
+  & .loading-spinner {
+    margin-left: 0.5rem;
   }
 }

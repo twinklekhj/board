@@ -6,7 +6,7 @@ interface AjaxProps {
     body?: Object | {}
     token?: TokenState | undefined
 }
-const Ajax = async (props: AjaxProps): Promise<Response> => {
+const Ajax = async (props: AjaxProps): Promise<any> => {
     const initParams = {
         method: props.method,
         headers: {
@@ -30,10 +30,14 @@ const Ajax = async (props: AjaxProps): Promise<Response> => {
         fetch(props.url, initParams)
             .then(response => {
                 if(response.ok) {
-                    resolve(response)
-                } else {
-                    reject(response)
+                    return response;
                 }
+                return response.text().then(message => {
+                    throw new Error(message);
+                });
+            })
+            .then(response=> {
+                resolve(response)
             })
             .catch(reason => reject(reason));
     });
