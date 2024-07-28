@@ -6,7 +6,7 @@ import {initToken} from "@Store/slice/token";
 
 export function useToken(): [boolean, boolean] {
     const [loading, setLoading] = useState(false);
-    const [authorized, setAuthorized] = useState(false);
+    const [authorized, setAuthorized] = useState(true);
 
     const dispatch = useDispatch();
     const accessToken = useSelector((state: RootState) => state.token).accessToken;

@@ -25,13 +25,13 @@ const LoginPage = () => {
     }
     const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        if(params.userId === ''){
+        if (params.userId === '') {
             AlertUtil.warning({
                 text: "Please enter your id!!",
             });
             return false;
         }
-        if(params.userPassword === ''){
+        if (params.userPassword === '') {
             AlertUtil.warning({
                 text: "Please enter your password!!",
             });
@@ -46,18 +46,19 @@ const LoginPage = () => {
                 password: params.userPassword,
             },
         })
-        .then(res => {
-            return res.json()
-        })
+            .then(res => res.json())
             .then(data => {
                 dispatch(updateToken({
                     bearerType: data.grantType,
                     accessToken: data.accessToken,
                 }))
             })
-        .catch(reason => {
-            console.error(reason.text())
-        })
+            .catch(reason => {
+                AlertUtil.warning({
+                    text: reason.message
+                })
+                console.error(reason)
+            })
     }
     return (
         <div className={"login-container"}>
