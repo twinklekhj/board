@@ -35,7 +35,7 @@ public class ControllerAspect {
         try {
             return pjp.proceed();
         } catch (Throwable e) {
-            e.printStackTrace();
+            log.warn("* ERROR: {}", e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
