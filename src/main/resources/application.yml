@@ -21,6 +21,15 @@ logging:
   level:
     org.springframework.web: debug
 
+cors:
+  allowed-methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+  allowed-origins:
+    - http://localhost:3000
+
 jwt:
   authorize-header: Authorization
   authorize-key: auth
