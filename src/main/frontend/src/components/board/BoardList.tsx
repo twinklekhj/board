@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { Board, BoardSearchParam, useBoard } from "@Hooks/board";
+import { Board, BoardSearchParam, useBoardList } from "@Hooks/board";
 import {
     MaterialReactTable,
     type MRT_ColumnDef,
@@ -24,7 +24,7 @@ const BoardList: React.FC = () => {
     // 정렬 옵션
     const [sorting, setSorting] = useState<MRT_SortingState>([]);
 
-    const [ data, pageCount, isLoading, isError ] = useBoard(pagination, params);
+    const [ data, pageCount, isLoading, isError ] = useBoardList(pagination, params);
 
     // 검색 조건 생성
     useEffect(() => {

@@ -12,6 +12,8 @@ export function useToken(): [boolean, boolean] {
     const dispatch = useDispatch();
     const accessToken = useSelector((state: RootState) => state.token).accessToken;
     const bearerType = useSelector((state: RootState) => state.token).bearerType;
+    const csrfToken = useSelector((state: RootState) => state.csrf)
+
     const validToken = useCallback(() => {
         setLoading(true);
 
@@ -25,7 +27,8 @@ export function useToken(): [boolean, boolean] {
                 token: {
                     accessToken: accessToken,
                     bearerType: bearerType
-                }
+                },
+                csrf: csrfToken
             }).then(res => {
                 return res.json();
             }).then(result => {

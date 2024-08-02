@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import BoardPage from "@Pages/board/BoardPage";
 import SignupPage from "@Pages/member/SignupPage";
@@ -8,8 +8,22 @@ import UpdatePage from "@Pages/board/UpdatePage";
 import DetailPage from "@Pages/board/DetailPage";
 import MyPage from "@Pages/member/MyPage";
 import TestPage from "@Pages/test/TestPage";
+import {Ajax} from "@Utils/ajax";
+import {useDispatch} from "react-redux";
+import {initToken} from "@Store/slice/token";
+import {updateCsrfToken} from "@Store/slice/csrf";
 
 const App: React.FC = () => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        Ajax({
+            url: '/api/csrf-token',
+            method: 'GET',
+        }).then(res => res.json())
+        .then(result => {
+            dispatch(updateCsrfToken(result));
+        })
+    }, []);
     return (
         <BrowserRouter>
             <Routes>

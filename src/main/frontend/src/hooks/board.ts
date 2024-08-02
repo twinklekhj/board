@@ -30,9 +30,10 @@ export interface BoardSearchParam {
     sortDir?: string;
 }
 
-export function useBoard(pagination: PaginationParam, param: BoardSearchParam): [Board[], number, boolean, boolean] {
+export function useBoardList(pagination: PaginationParam, param: BoardSearchParam): [Board[], number, boolean, boolean] {
     const accessToken = useSelector((state: RootState) => state.token.accessToken);
     const bearerType = useSelector((state: RootState) => state.token.bearerType);
+    const csrfToken = useSelector((state: RootState) => state.csrf)
 
     const [data, setData] = useState<Board[]>([]);
     const [pageCount, setPageCount] = useState<number>(0);
@@ -52,7 +53,8 @@ export function useBoard(pagination: PaginationParam, param: BoardSearchParam): 
                     pageIdx: pagination.pageIndex + 1,
                     pageSize: pagination.pageSize,
                     ...param,
-                }
+                },
+                csrf: csrfToken
             });
             const result = await res.json();
             setData(result.items);
@@ -77,6 +79,8 @@ export function useBoardDetail(boardId: string | undefined) {
 
     const accessToken = useSelector((state: RootState) => state.token.accessToken);
     const bearerType = useSelector((state: RootState) => state.token.bearerType);
+    const csrfToken = useSelector((state: RootState) => state.csrf)
+
     const memberId = useSelector((state: RootState) => state.member.id);
 
     const [board, setBoard] = useState<Board | null>(null);
@@ -100,6 +104,7 @@ export function useBoardDetail(boardId: string | undefined) {
                             accessToken: accessToken,
                             bearerType: bearerType
                         },
+                        csrf: csrfToken
                     }).then(res => {
                         if (res.ok) {
                             AlertUtil.success({
@@ -130,6 +135,7 @@ export function useBoardDetail(boardId: string | undefined) {
                 accessToken,
                 bearerType,
             },
+            csrf: csrfToken
         })
             .then(res => res.json())
             .then(res => {
@@ -153,10 +159,11 @@ export function useBoardDetail(boardId: string | undefined) {
     return { board, memberId, onUpdateClick, onDeleteClick };
 }
 
-export function useAddBoard() {
+export function useBoardAdd() {
     const navigate = useNavigate();
     const accessToken = useSelector((state: RootState) => state.token.accessToken);
     const bearerType = useSelector((state: RootState) => state.token.bearerType);
+    const csrfToken = useSelector((state: RootState) => state.csrf)
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -201,7 +208,8 @@ export function useAddBoard() {
             token: {
                 accessToken: accessToken,
                 bearerType: bearerType
-            }
+            },
+            csrf: csrfToken
         }).then((res: Response) => {
             if (res.status === 201) {
                 AlertUtil.success({
@@ -242,6 +250,7 @@ export function useBoardUpdate() {
 
     const accessToken = useSelector((state: RootState) => state.token.accessToken);
     const bearerType = useSelector((state: RootState) => state.token.bearerType);
+    const csrfToken = useSelector((state: RootState) => state.csrf)
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -256,6 +265,7 @@ export function useBoardUpdate() {
                     accessToken: accessToken,
                     bearerType: bearerType,
                 },
+                csrf: csrfToken
             }).then(res => res.json())
                 .then(res => {
                     setTitle(res.title);
@@ -330,7 +340,8 @@ export function useBoardUpdate() {
             token: {
                 accessToken: accessToken,
                 bearerType: bearerType
-            }
+            },
+            csrf: csrfToken
         }).then((res: Response) => {
             if (res.status === 204) {
                 AlertUtil.success({

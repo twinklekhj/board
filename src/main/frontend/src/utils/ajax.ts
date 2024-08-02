@@ -1,10 +1,12 @@
-import {TokenState} from "@Store/slice/token"; // Redux 스토어 타입
+import {TokenState} from "@Store/slice/token";
+import {CsrfTokenState} from "@Store/slice/csrf"; // Redux 스토어 타입
 
 interface AjaxProps {
     url: string;
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
     body?: Object | {}
     token?: TokenState | undefined
+    csrf?: CsrfTokenState | undefined
 }
 const Ajax = async (props: AjaxProps): Promise<any> => {
     const initParams = props.method === 'GET' ? {
@@ -22,6 +24,10 @@ const Ajax = async (props: AjaxProps): Promise<any> => {
         body: JSON.stringify(props.body)
     };
 
+    if(props.csrf) {
+        // @ts-ignore
+        initParams.headers[props.csrf.headerName] = props.csrf.token;
+    }
     if(props.token) {
         initParams.headers.Authorization = `${props.token.bearerType} ${props.token.accessToken}`;
     }

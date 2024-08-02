@@ -7,7 +7,7 @@ import rehypeSanitize from "rehype-sanitize";
 import {IoIosSend} from "react-icons/io";
 import {FaArrowLeft} from "react-icons/fa6";
 import {useNavigate} from "react-router-dom";
-import {useAddBoard} from "@Hooks/board";
+import {useBoardAdd} from "@Hooks/board";
 
 const WritePage = () => {
     const navigate = useNavigate();
@@ -19,7 +19,7 @@ const WritePage = () => {
         onContentChange,
         onShowChange,
         onPublishClick
-    } = useAddBoard();
+    } = useBoardAdd();
 
     const goBack = () => {
         AlertUtil.confirm({

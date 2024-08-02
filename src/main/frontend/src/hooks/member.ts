@@ -1,13 +1,15 @@
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import React from "react";
 import AlertUtil from "@Utils/alert";
 import {Ajax} from "@Utils/ajax";
 import {updateToken} from "@Store/slice/token";
 import {useNavigate} from "react-router-dom";
+import {RootState} from "@Store/index";
 
 export const useLogin = function () {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const csrfToken = useSelector((state: RootState) => state.csrf)
     const [params, setParams] = React.useState({
         userId: '',
         userPassword: ''
@@ -45,6 +47,7 @@ export const useLogin = function () {
                 id: params.userId,
                 password: params.userPassword,
             },
+            csrf: csrfToken,
         })
             .then(res => res.json())
             .then(data => {
