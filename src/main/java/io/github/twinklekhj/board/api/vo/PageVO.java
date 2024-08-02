@@ -40,6 +40,9 @@ public class PageVO<T> implements Serializable {
     public static <T> PageVOBuilder<T> builder(Page<T> page){
         return (PageVOBuilder<T>) builder()
                 .items(page.toList().toArray())
-                .count(page.getTotalElements());
+                .count(page.getTotalElements())
+                .pageIdx(page.getNumber() + 1)
+                .pageSize(page.getSize())
+                .pageCnt(page.getTotalPages());
     }
 }

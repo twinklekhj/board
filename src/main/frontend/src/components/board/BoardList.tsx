@@ -1,110 +1,110 @@
-import React from 'react';
-import { useTable, useSortBy, Column } from 'react-table';
-
-interface Board {
-    id: number;
-    title: string;
-    writer: string;
-    hits: number;
-}
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { Board, BoardSearchParam, useBoard } from "@Hooks/board";
+import {
+    MaterialReactTable,
+    type MRT_ColumnDef,
+    MRT_ColumnFiltersState,
+    MRT_SortingState,
+    useMaterialReactTable
+} from 'material-react-table';
+import { useNavigate } from "react-router-dom";
+import {FaLock} from "react-icons/fa6";
 
 const BoardList: React.FC = () => {
-    const data = React.useMemo<Board[]>(
+    const navigate = useNavigate();
+    const [params, setParams] = useState<BoardSearchParam>({});
+
+    // 페이징 옵션
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10
+    });
+    // 검색 옵션
+    const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
+    // 정렬 옵션
+    const [sorting, setSorting] = useState<MRT_SortingState>([]);
+
+    const [ data, pageCount, isLoading, isError ] = useBoard(pagination, params);
+
+    // 검색 조건 생성
+    useEffect(() => {
+        let updatedParams = params;
+        if (columnFilters.length > 0){
+            updatedParams = {
+                ...updatedParams,
+                ...Object.fromEntries(columnFilters.map(filter => [filter.id, filter.value]))
+            };
+        }
+        if (sorting.length > 0) {
+            updatedParams = {
+                ...updatedParams,
+                ...{
+                    sortField: sorting[0].id,
+                    sortDir: sorting[0].desc ? 'desc' : 'asc'
+                }
+            };
+        }
+        setParams(updatedParams);
+    }, [columnFilters, sorting, params]);
+
+
+    const columns = useMemo<MRT_ColumnDef<Board>[]>(
         () => [
-            {
-                id: 1,
-                title: 'Hello World',
-                writer: 'khj',
-                hits: 10,
+            { accessorKey: 'id', header: '글번호', size: 100, enableColumnFilter: false },
+            { accessorKey: 'title', header: '제목', size: 500, Cell: ({renderedCellValue, row}) => (
+                    <>
+                        <span className={"mr-1"}>{!row.original.visible ? <FaLock/> : null}</span>
+                        <span>{renderedCellValue}</span>
+                    </>
+                )
             },
-            {
-                id: 2,
-                title: 'React Table',
-                writer: 'john',
-                hits: 20,
-            },
-            {
-                id: 3,
-                title: 'Sorting Example',
-                writer: 'doe',
-                hits: 5,
-            },
+            {accessorKey: 'writer', header: '글쓴이', size: 150},
+            { accessorKey: 'createDate', header: '날짜', size: 150, enableColumnFilter: false },
+            { accessorKey: 'hits', header: '조회수', size: 100, enableColumnFilter: false },
         ],
         []
     );
 
-    const columns = React.useMemo<Column<Board>[]>(
-        () => [
-            {
-                Header: 'ID',
-                accessor: 'id',
+    const table = useMaterialReactTable({
+        columns,
+        data,
+        manualFiltering: true,
+        onColumnFiltersChange: setColumnFilters,
+        manualPagination: true,
+        rowCount: data.length,
+        manualSorting: true,
+        onSortingChange: setSorting,
+        muiPaginationProps: {
+            color: 'primary',
+            shape: 'rounded',
+            showRowsPerPage: false,
+            variant: 'outlined',
+        },
+        muiToolbarAlertBannerProps: isError ? {
+            color: 'error',
+            children: 'Error loading data',
+        } : undefined,
+        paginationDisplayMode: 'pages',
+        pageCount,
+        state: {
+            pagination,
+            columnFilters,
+            sorting,
+            showAlertBanner: isError,
+            showProgressBars: isLoading,
+        },
+        onPaginationChange: setPagination,
+        muiTableBodyRowProps: ({row}) => ({
+            onClick: (event) => {
+                navigate(`/board/${row.original.id}`);
             },
-            {
-                Header: 'Title',
-                accessor: 'title',
+            sx: {
+                cursor: 'pointer', //you might want to change the cursor too when adding an onClick
             },
-            {
-                Header: 'Writer',
-                accessor: 'writer',
-            },
-            {
-                Header: 'Hits',
-                accessor: 'hits',
-            },
-        ],
-        []
-    );
+        }),
+    });
 
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = useTable({ columns, data }, useSortBy);
-
-    return (
-        <table {...getTableProps()}>
-            <thead>
-            {headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-                    {headerGroup.headers.map(column => (
-                        <th
-                            {...column.getHeaderProps(column.getSortByToggleProps())}
-                            key={column.id}
-                            style={{
-                                cursor: 'pointer',
-                            }}
-                        >
-                            {column.render('Header')}
-                            <span>
-                  {column.isSorted
-                      ? column.isSortedDesc
-                          ? '🔽'
-                          : '🔼'
-                      : ''}
-                </span>
-                        </th>
-                    ))}
-                </tr>
-            ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-            {rows.map(row => {
-                prepareRow(row);
-                return (
-                    <tr {...row.getRowProps()} key={row.id}>
-                        {row.cells.map(cell => (
-                            <td {...cell.getCellProps()} key={cell.column.id}>
-                                {cell.render('Cell')}
-                            </td>
-                        ))}
-                    </tr>
-                );
-            })}
-            </tbody>
-        </table>
-    );
+    return <MaterialReactTable table={table} />;
 };
 
 export default BoardList;

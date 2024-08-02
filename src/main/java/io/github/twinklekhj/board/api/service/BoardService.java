@@ -1,6 +1,8 @@
 package io.github.twinklekhj.board.api.service;
 
+import io.github.twinklekhj.board.api.dto.BoardDetailDto;
 import io.github.twinklekhj.board.api.dto.BoardListDto;
+import io.github.twinklekhj.board.api.exception.DataNotFoundException;
 import io.github.twinklekhj.board.api.param.board.BoardSearchParam;
 import io.github.twinklekhj.board.api.param.board.BoardWriteParam;
 import io.github.twinklekhj.board.api.vo.PageVO;
@@ -11,4 +13,10 @@ public interface BoardService {
     PageVO<BoardListDto> findBy(BoardSearchParam param);
 
     ResponseEntity<?> write(UserDetails userDetails, BoardWriteParam param);
+
+    ResponseEntity<BoardDetailDto> getBoardDetail(Long id) throws DataNotFoundException;
+
+    ResponseEntity<?> updateBoardDetail(Long id, BoardWriteParam param);
+
+    ResponseEntity<?> delete(Long id);
 }

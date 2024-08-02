@@ -1,5 +1,6 @@
 package io.github.twinklekhj.board.api.param.board;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Builder
@@ -9,7 +10,10 @@ import lombok.*;
 @Setter
 @ToString
 public class BoardWriteParam {
+    @NotNull
     private String title;
+    @NotNull
     private String content;
-    private Boolean hide = false;
+    @Builder.Default
+    private Boolean visible = true;
 }
