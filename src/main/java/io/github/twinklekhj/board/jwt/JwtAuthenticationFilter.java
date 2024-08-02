@@ -35,9 +35,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 토큰이 필요하지 않은 API URL에 대해서 배열로 구성
         List<String> list = Arrays.asList(
+                "/api/list",
                 "/api/authenticate",
-                "/api/boards",
-                "/api/user/register"
+                "/api/register"
         );
 
         String uri = request.getRequestURI();
@@ -46,37 +46,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        log.info("요청한 URL: {}", uri);
+        log.debug("요청한 URL: {}", uri);
 
-        Optional<String> jwtOptional = resolveToken(request);
+        Optional<String> jwtOptional = tokenProvider.resolveToken(request);
         if (jwtOptional.isPresent()) {
             String jwt = jwtOptional.get();
             try {
                 if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                     Authentication authentication = tokenProvider.getAuthentication(jwt);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    log.info("jwt 인증 완료: {}", authentication.getPrincipal());
+                    log.debug("jwt 인증 완료: {}", authentication.getPrincipal());
                 }
 
                 filterChain.doFilter(request, response);
             } catch (JwtException e) {
-                e.printStackTrace();
+                log.error("ERROR: {}", e.getMessage());
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
             }
         } else {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Cannot find bearer token");
         }
-    }
-
-    private Optional<String> resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(tokenProperties.getAuthorizeHeader());
-        if(bearerToken == null){
-            return Optional.empty();
-        }
-        String bearerType = tokenProperties.getBearerType();
-        if (bearerToken.startsWith(bearerType)) {
-            return Optional.of(bearerToken.substring(bearerType.length() + 1));
-        }
-        return Optional.empty();
     }
 }

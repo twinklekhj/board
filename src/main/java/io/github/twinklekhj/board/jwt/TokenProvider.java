@@ -3,6 +3,7 @@ package io.github.twinklekhj.board.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,12 +14,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -35,6 +35,7 @@ public class TokenProvider {
 
     /**
      * [TokenProvider] Access Token 생성
+     *
      * @param authentication 인증 객체
      * @return Access Token
      */
@@ -61,6 +62,7 @@ public class TokenProvider {
 
     /**
      * [TokenProvider] Access Token으로 인증 객체 가져오기
+     *
      * @param accessToken Access Token
      * @return 인증 객체
      */
@@ -82,6 +84,7 @@ public class TokenProvider {
 
     /**
      * [TokenProvider] Token 검증
+     *
      * @param token 검증할 Token
      * @return 유효성 판단 유무
      */
@@ -106,5 +109,23 @@ public class TokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    /**
+     * [TokenProvider] Request로 부터 Token 분리
+     *
+     * @param request 요청 객체
+     * @return Token String
+     */
+    public Optional<String> resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(tokenProperties.getAuthorizeHeader());
+        if (bearerToken == null) {
+            return Optional.empty();
+        }
+        String bearerType = tokenProperties.getBearerType();
+        if (bearerToken.startsWith(bearerType)) {
+            return Optional.of(bearerToken.substring(bearerType.length() + 1));
+        }
+        return Optional.empty();
     }
 }
