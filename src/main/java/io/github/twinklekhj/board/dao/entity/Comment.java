@@ -7,47 +7,34 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
 
 @Builder
-@Entity(name = "tbl_board")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@SequenceGenerator(name = "SEQ_BOARD_GENERATOR", sequenceName = "SEQ_BOARD", initialValue = 1, allocationSize = 1)
-public class Board {
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "tbl_comment")
+@SequenceGenerator(name = "SEQ_COMMENT_GENERATOR", sequenceName = "SEQ_COMMENT", initialValue = 1, allocationSize = 1)
+public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BOARD_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_COMMENT_GENERATOR")
     private Long id;
+
+    @JoinColumn(name = "board_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Board board;
 
     @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @Column(name = "title", length = 100)
-    @Comment("제목")
-    private String title;
-
-    @Column(name = "content")
-    @Lob
-    @Comment("내용")
+    @Column(name = "content", length = 1000)
     private String content;
 
-    @Column(name = "hits")
-    @Comment("조회수")
-    @Builder.Default
-    private Integer hits = 0;
-
-    @Column(name = "visible")
-    @Comment("비공개")
-    @Builder.Default
-    private Boolean visible = true;
-
-    @Builder.Default
     @Column(name = "create_date")
+    @Builder.Default
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -58,4 +45,5 @@ public class Board {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime editDate;
+
 }

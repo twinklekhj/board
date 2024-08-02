@@ -1,13 +1,15 @@
-package io.github.twinklekhj.board.dao.repository;
+package io.github.twinklekhj.board.dao.repository.board;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.github.twinklekhj.board.api.dto.BoardDetailDto;
 import io.github.twinklekhj.board.api.dto.BoardListDto;
 import io.github.twinklekhj.board.api.param.board.BoardSearchParam;
 import io.github.twinklekhj.board.dao.entity.QBoard;
 import io.github.twinklekhj.board.dao.entity.QMember;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -57,7 +60,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         QBoard qBoard = QBoard.board;
         QMember qMember = QMember.member;
 
-        OrderSpecifier<?> specifier = qBoard.createDate.desc();
+        OrderSpecifier<?> specifier = qBoard.id.desc();
         if (param.getSortField() != null && !param.getSortField().isEmpty()) {
             Order order = Order.ASC;
             if (param.getSortDir() != null && param.getSortDir().equalsIgnoreCase("desc")) {
@@ -68,13 +71,13 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 
         return queryFactory
                 .select(Projections.constructor(BoardListDto.class,
-                        qBoard.id, qBoard.title, qMember.memberId, qBoard.hits, qBoard.hide)
+                        qBoard.id, qBoard.title, qMember.memberId, qBoard.hits, qBoard.visible, qBoard.createDate, qBoard.editDate)
                 )
                 .from(qBoard)
                 .where(getCondition(param, true))
                 .leftJoin(qMember)
                 .on(qMember.id.eq(qBoard.member.id))
-                .offset(param.getPageIdx() - 1)
+                .offset((long) (param.getPageIdx() - 1) * param.getPageSize())
                 .limit(param.getPageSize())
                 .orderBy(specifier)
                 .fetch();
@@ -88,6 +91,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
                 .from(qBoard)
                 .where(getCondition(param, false))
                 .leftJoin(qMember)
+                .on(qMember.id.eq(qBoard.member.id))
                 .fetchOne();
     }
 
@@ -95,5 +99,28 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
     public Page<BoardListDto> findBy(BoardSearchParam param) {
         PageRequest request = PageRequest.of(param.getPageIdx() - 1, param.getPageSize());
         return new PageImpl<>(getBy(param), request, countBy(param));
+    }
+
+    @Override
+    public Optional<BoardDetailDto> findBy(Long id) {
+        QBoard qBoard = QBoard.board;
+        QMember qMember = QMember.member;
+        return Optional.ofNullable(queryFactory
+                .select(Projections.constructor(BoardDetailDto.class,
+                        qBoard.id, qBoard.title, qMember.id, qMember.memberId, qBoard.content, qBoard.hits, qBoard.visible, qBoard.createDate, qBoard.editDate))
+                .from(qBoard)
+                .where(qBoard.id.eq(id))
+                .leftJoin(qMember)
+                .on(qMember.id.eq(qBoard.member.id))
+                .fetchOne());
+    }
+
+    @Transactional
+    public void increaseHits(Long id) {
+        QBoard qBoard = QBoard.board;
+        queryFactory.update(qBoard)
+                .set(qBoard.hits, qBoard.hits.add(1))
+                .where(qBoard.id.eq(id))
+                .execute();
     }
 }
