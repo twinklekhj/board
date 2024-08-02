@@ -1,16 +1,17 @@
 package io.github.twinklekhj.board.api.controller;
 
+import io.github.twinklekhj.board.annotation.ApiMapping;
+import io.github.twinklekhj.board.api.dto.UserDto;
+import io.github.twinklekhj.board.api.exception.UnauthorizedException;
 import io.github.twinklekhj.board.api.param.login.LoginParam;
 import io.github.twinklekhj.board.api.param.login.RegisterParam;
 import io.github.twinklekhj.board.api.service.UserService;
 import io.github.twinklekhj.board.jwt.Token;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,27 +21,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/api/authenticate")
+    @PostMapping(path = "/api/authenticate")
+    @ApiMapping(order = 1, description = "[사용자 관리] 사용자 인증")
     public ResponseEntity<Token> authenticate(@Valid @RequestBody LoginParam param) {
         return userService.authenticate(param);
     }
 
-    @PostMapping("/api/register")
+    @PostMapping(path = "/api/register")
+    @ApiMapping(order = 2, description = "[사용자 관리] 사용자 등록")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterParam param) {
         return userService.register(param);
     }
 
-    @PostMapping("/api/user/{id}")
-    public ResponseEntity<?> findUserById(@PathVariable Long id) {
-        return userService.findUserById(id);
-    }
-
-    @PostMapping("/api/validate")
-    public ResponseEntity<?> validate(@AuthenticationPrincipal UserDetails user) {
-        if(user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    @PostMapping(path = "/api/validate")
+    @ApiMapping(order = 3, description = "[사용자 관리] 사용자 정보 획득")
+    public ResponseEntity<UserDto> validate(@AuthenticationPrincipal UserDetails user) {
+        if (user == null) {
+            throw new UnauthorizedException();
         }
-
-        return ResponseEntity.ok().build();
+        return userService.findUserById(user.getUsername());
     }
 }
