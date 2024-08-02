@@ -1,7 +1,7 @@
 package io.github.twinklekhj.board.login;
 
 import io.github.twinklekhj.board.dao.entity.Member;
-import io.github.twinklekhj.board.dao.repository.MemberRepository;
+import io.github.twinklekhj.board.dao.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +21,7 @@ public class MemberDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("사용자 검색: {}", username);
         Optional<Member> memberOptional = memberRepository.findByMemberId(username);
-        if(!memberOptional.isPresent()) {
+        if(memberOptional.isEmpty()) {
             throw new UsernameNotFoundException("이용자를 찾을 수 없습니다.");
         }
         return new MemberDetails(memberOptional.get());

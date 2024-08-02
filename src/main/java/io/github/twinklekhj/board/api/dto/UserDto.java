@@ -5,14 +5,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Data
-@AllArgsConstructor
-@RequiredArgsConstructor
 public class UserDto {
-    private int id;
-    private String memberId;
+    private Long id;
+    private String userId;
+    private String name;
     private String email;
-    private Role role;
-    private boolean enabled;
-    private int failureCnt;
+    private List<Role> roles;
+
+    public UserDto(Long id, String userId, String name, String email, Role role){
+        this.id = id;
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.roles = Role.getRoles(role);
+    }
 }
