@@ -1,4 +1,7 @@
+@import "function.less";
+
 :root {
+  --header-size: 90px;
   --fs-1: 2.25rem;
   --fs-2: 2rem;
   --fs-3: 1.75rem;
@@ -12,7 +15,6 @@
 }
 
 html, body, #root {
-  height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -30,8 +32,11 @@ body {
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
+  font-family: var(--fs-family) !important;
 }
-
+div, span, input, button, textarea, td {
+  font-family: var(--fs-family) !important;
+}
 h1 {
   font-size: var(--fs-1);
 }
@@ -56,10 +61,8 @@ h6 {
   font-size: var(--fs-6);
 }
 
-.wrapper {
-  width: 1520px;
-  max-width: 90%;
-  margin: 0 auto;
+.inner {
+  .wrapper();
 }
 
 div, form, section, header, footer {
@@ -89,8 +92,14 @@ input {
     background-color: transparent;
   }
 }
-
-button, .btn {
+button {
+  padding: 0.8rem 1rem;
+  border: none;
+  outline: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+.btn {
   width: 100%;
   padding: 0.8rem 1rem;
   border: none;
@@ -99,33 +108,97 @@ button, .btn {
   cursor: pointer;
 }
 
-table {
-  margin-top: 1rem;
+/* Layout */
+.header {
+  background: white;
+  .flex-box();
+  position: fixed;
+  top: 0;
   width: 100%;
-  border-collapse: collapse;
+  height: var(--header-size);
+  border-bottom: solid 1px #efefef;
+  z-index: 10;
 
-  & tr {
-    border-top: solid 1px;
-    border-bottom: solid 1px;
+  & .header-title {
+    font-size: var(--fs-4);
+    font-weight: 600;
   }
 
-  & th {
-    text-align: left;
+  & .inner {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+}
+
+.content {
+  margin-top: var(--header-size);
+  padding: 2rem 0;
+
+  & .inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
-  & th, td {
-    padding: 0.5rem;
-    border-right: solid 1px;
+  & .content-action {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
 
-    &:first-child {
-      border-left: solid 1px;
+  & .content-list {
+    height: 100%;
+    & > * {
+      border: solid 1px #eee;
+      box-shadow: none!important;
+      height: 100%;
+    }
+
+    tbody {
+      max-height: 500px;
     }
   }
 }
 
+.member-container {
+  margin-left: auto;
+  cursor: pointer;
+  .flex-box(@gap: 0.5rem);
+}
+#transition-popper {
+  z-index: 11;
+}
+.member-tooltip {
+  box-shadow: 1px 1px 0.7rem rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1rem;
+  background: white;
+  width: 200px;
+
+  & button {
+    width: 100%;
+  }
+}
+
+/* Common */
+.d-flex {
+  display: flex;
+}
+
+.ml-1 {
+  margin-left: 0.5rem;
+}
+.mr-1 {
+  margin-right: 0.5rem;
+}
 // login page
-#root {
-  &:has(> .login-container) {
+html, body, #root {
+  &:has(.login-container) {
+    height: 100%;
+
     .login-container {
       display: flex;
       width: 100%;
@@ -148,9 +221,7 @@ table {
       .login-form {
         width: 45%;
         height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        .flex-box(@flex-direction: column, @justify-content: center);
 
         & .login-title {
           display: flex;
@@ -190,16 +261,86 @@ table {
     }
   }
 }
+html, body, #root {
+  &:has(.loading-container) {
+    height: 100%;
 
-.loading-container {
+    .loading-container {
+      display: flex;
+      gap: 1rem;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+      align-items: center;
+
+      & .loading-spinner {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+}
+.post-container {
   display: flex;
-  gap: 1rem;
   flex-direction: column;
-  justify-content: center;
+  gap: 1rem;
   height: 100%;
-  align-items: center;
 
-  & .loading-spinner {
-    margin-left: 0.5rem;
+  .post-title {
+    font-size: var(--fs-3);
+
+    & input {
+      font-size: var(--fs-3);
+      width: 100%;
+    }
+  }
+  .post-divider {
+    border-bottom: solid 3px;
+  }
+  .post-content {
+    padding: 1rem;
+    border: solid 1px #efefef;
+    min-height: 300px;
+
+    &:has(> .w-md-editor) {
+      padding: 0;
+      height: 70vh;
+      border: none;
+    }
+  }
+  &:has(.w-md-editor) {
+    gap: 1.5rem;
+  }
+
+  .post-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+
+    .post-flex {
+      .flex-box(@gap: 0.5rem)
+    }
+  }
+
+}
+
+/* Markdown Editor */
+.w-md-editor {
+  --md-editor-font-family: var(--fs-family);
+}
+.w-md-editor-toolbar {
+  li {
+    & > button {
+      height: 40px;
+      color: #777;
+
+      & svg {
+        height: 16px;
+        width: 20px;
+      }
+    }
   }
 }

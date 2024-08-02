@@ -14,6 +14,7 @@ module.exports = (env, argv) => {
             main: path.resolve(__dirname, "src/index.tsx")
         },
         output: {
+            publicPath: "/",
             path: path.resolve(__dirname, "build"),
             filename: "[name].bundle.js",
             clean: true,
@@ -31,7 +32,7 @@ module.exports = (env, argv) => {
             open: true,
             proxy: [
                 {
-                    context:"/api",
+                    context: "/api",
                     target: process.env.API_URL || 'http://localhost:8080',
                     changeOrigin: true,
                 }
@@ -97,8 +98,8 @@ module.exports = (env, argv) => {
             }),
             new CopyWebpackPlugin({
                 patterns: [
-                    { from: 'public/robots.txt', to: 'robots.txt' },
-                    { from: 'public/manifest.json', to: 'manifest.json' },
+                    {from: 'public/robots.txt', to: 'robots.txt'},
+                    {from: 'public/manifest.json', to: 'manifest.json'},
                 ],
             }),
             new CleanWebpackPlugin(),

@@ -1,4 +1,5 @@
 :root {
+  --header-size: 90px;
   --fs-1: 2.25rem;
   --fs-2: 2rem;
   --fs-3: 1.75rem;
@@ -13,7 +14,6 @@
 html,
 body,
 #root {
-  height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -32,6 +32,15 @@ h5,
 h6 {
   margin: 0;
   padding: 0;
+  font-family: var(--fs-family) !important;
+}
+div,
+span,
+input,
+button,
+textarea,
+td {
+  font-family: var(--fs-family) !important;
 }
 h1 {
   font-size: var(--fs-1);
@@ -51,7 +60,7 @@ h5 {
 h6 {
   font-size: var(--fs-6);
 }
-.wrapper {
+.inner {
   width: 1520px;
   max-width: 90%;
   margin: 0 auto;
@@ -82,7 +91,13 @@ input {
   flex: 1;
   background-color: transparent;
 }
-button,
+button {
+  padding: 0.8rem 1rem;
+  border: none;
+  outline: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
 .btn {
   width: 100%;
   padding: 0.8rem 1rem;
@@ -91,34 +106,105 @@ button,
   border-radius: 0.5rem;
   cursor: pointer;
 }
-table {
-  margin-top: 1rem;
+/* Layout */
+.header {
+  background: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  position: fixed;
+  top: 0;
   width: 100%;
-  border-collapse: collapse;
+  height: var(--header-size);
+  border-bottom: solid 1px #efefef;
+  z-index: 10;
 }
-table tr {
-  border-top: solid 1px;
-  border-bottom: solid 1px;
+.header .header-title {
+  font-size: var(--fs-4);
+  font-weight: 600;
 }
-table th {
-  text-align: left;
+.header .inner {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
-table th,
-table td {
-  padding: 0.5rem;
-  border-right: solid 1px;
+.content {
+  margin-top: var(--header-size);
+  padding: 2rem 0;
 }
-table th:first-child,
-table td:first-child {
-  border-left: solid 1px;
+.content .inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-#root:has(> .login-container) .login-container {
+.content .content-action {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+.content .content-list {
+  height: 100%;
+}
+.content .content-list > * {
+  border: solid 1px #eee;
+  box-shadow: none!important;
+  height: 100%;
+}
+.content .content-list tbody {
+  max-height: 500px;
+}
+.member-container {
+  margin-left: auto;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+}
+#transition-popper {
+  z-index: 11;
+}
+.member-tooltip {
+  box-shadow: 1px 1px 0.7rem rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1rem;
+  background: white;
+  width: 200px;
+}
+.member-tooltip button {
+  width: 100%;
+}
+/* Common */
+.d-flex {
+  display: flex;
+}
+.ml-1 {
+  margin-left: 0.5rem;
+}
+.mr-1 {
+  margin-right: 0.5rem;
+}
+html:has(.login-container),
+body:has(.login-container),
+#root:has(.login-container) {
+  height: 100%;
+}
+html:has(.login-container) .login-container,
+body:has(.login-container) .login-container,
+#root:has(.login-container) .login-container {
   display: flex;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
-#root:has(> .login-container) .login-container .login-illustration {
+html:has(.login-container) .login-container .login-illustration,
+body:has(.login-container) .login-container .login-illustration,
+#root:has(.login-container) .login-container .login-illustration {
   background: linear-gradient(180deg, #2d629e, #1c5694);
   width: 55%;
   padding: 5% 0;
@@ -129,27 +215,39 @@ table td:first-child {
   justify-content: space-between;
   align-items: center;
 }
-#root:has(> .login-container) .login-container .login-form {
+html:has(.login-container) .login-container .login-form,
+body:has(.login-container) .login-container .login-form,
+#root:has(.login-container) .login-container .login-form {
   width: 45%;
   height: 100%;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
-#root:has(> .login-container) .login-container .login-form .login-title {
+html:has(.login-container) .login-container .login-form .login-title,
+body:has(.login-container) .login-container .login-form .login-title,
+#root:has(.login-container) .login-container .login-form .login-title {
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
   margin-bottom: 2rem;
 }
-#root:has(> .login-container) .login-container .login-form .login-title img {
+html:has(.login-container) .login-container .login-form .login-title img,
+body:has(.login-container) .login-container .login-form .login-title img,
+#root:has(.login-container) .login-container .login-form .login-title img {
   max-height: 80px;
 }
-#root:has(> .login-container) .login-container .login-form .login-title h1 {
+html:has(.login-container) .login-container .login-form .login-title h1,
+body:has(.login-container) .login-container .login-form .login-title h1,
+#root:has(.login-container) .login-container .login-form .login-title h1 {
   font-size: var(--fs-2);
 }
-#root:has(> .login-container) .login-container .login-form .input-group {
+html:has(.login-container) .login-container .login-form .input-group,
+body:has(.login-container) .login-container .login-form .input-group,
+#root:has(.login-container) .login-container .login-form .input-group {
   display: flex;
   gap: 0.25rem;
   width: 350px;
@@ -158,7 +256,9 @@ table td:first-child {
   color: #999;
   margin-top: 1rem;
 }
-#root:has(> .login-container) .login-container .login-form .btn-login {
+html:has(.login-container) .login-container .login-form .btn-login,
+body:has(.login-container) .login-container .login-form .btn-login,
+#root:has(.login-container) .login-container .login-form .btn-login {
   margin-top: 1rem;
   background: var(--color-primary);
   color: white;
@@ -166,7 +266,14 @@ table td:first-child {
   border: none;
   outline: none;
 }
-.loading-container {
+html:has(.loading-container),
+body:has(.loading-container),
+#root:has(.loading-container) {
+  height: 100%;
+}
+html:has(.loading-container) .loading-container,
+body:has(.loading-container) .loading-container,
+#root:has(.loading-container) .loading-container {
   display: flex;
   gap: 1rem;
   flex-direction: column;
@@ -174,7 +281,66 @@ table td:first-child {
   height: 100%;
   align-items: center;
 }
-.loading-container .loading-spinner {
+html:has(.loading-container) .loading-container .loading-spinner,
+body:has(.loading-container) .loading-container .loading-spinner,
+#root:has(.loading-container) .loading-container .loading-spinner {
   margin-left: 0.5rem;
+}
+.post-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+}
+.post-container .post-title {
+  font-size: var(--fs-3);
+}
+.post-container .post-title input {
+  font-size: var(--fs-3);
+  width: 100%;
+}
+.post-container .post-divider {
+  border-bottom: solid 3px;
+}
+.post-container .post-content {
+  padding: 1rem;
+  border: solid 1px #efefef;
+  min-height: 300px;
+}
+.post-container .post-content:has(> .w-md-editor) {
+  padding: 0;
+  height: 70vh;
+  border: none;
+}
+.post-container:has(.w-md-editor) {
+  gap: 1.5rem;
+}
+.post-container .post-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.post-container .post-meta {
+  display: flex;
+  justify-content: space-between;
+}
+.post-container .post-meta .post-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+}
+/* Markdown Editor */
+.w-md-editor {
+  --md-editor-font-family: var(--fs-family);
+}
+.w-md-editor-toolbar li > button {
+  height: 40px;
+  color: #777;
+}
+.w-md-editor-toolbar li > button svg {
+  height: 16px;
+  width: 20px;
 }
 /*# sourceMappingURL=default.css.map */

@@ -1,6 +1,6 @@
 import React from 'react';
 import {useToken} from "@Hooks/token";
-import LoginPage from "@Pages/login/LoginPage";
+import LoginPage from "@Pages/member/LoginPage";
 import LoadingPage from "@Pages/loading/LoadingPage";
 
 export interface TokenBoundaryProps {

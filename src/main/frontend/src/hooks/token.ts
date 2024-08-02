@@ -3,10 +3,11 @@ import {RootState} from "../store";
 import {useCallback, useEffect, useState} from "react";
 import {Ajax} from "@Utils/ajax";
 import {initToken} from "@Store/slice/token";
+import {updateMember} from "@Store/slice/member";
 
 export function useToken(): [boolean, boolean] {
-    const [loading, setLoading] = useState(false);
-    const [authorized, setAuthorized] = useState(true);
+    const [loading, setLoading] = useState(true);
+    const [authorized, setAuthorized] = useState(false);
 
     const dispatch = useDispatch();
     const accessToken = useSelector((state: RootState) => state.token).accessToken;
@@ -26,9 +27,18 @@ export function useToken(): [boolean, boolean] {
                     bearerType: bearerType
                 }
             }).then(res => {
+                return res.json();
+            }).then(result => {
+                console.log(result)
+                dispatch(updateMember({
+                    id: result.id,
+                    name: result.name,
+                    email: result.email
+                }))
                 setLoading(false);
                 setAuthorized(true);
-            }).catch(err => {
+            })
+                .catch(err => {
                 setLoading(false);
                 setAuthorized(false);
                 dispatch(initToken())
