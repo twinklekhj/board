@@ -4,7 +4,7 @@ import io.github.twinklekhj.board.annotation.ApiMapping;
 import io.github.twinklekhj.board.api.dto.BoardListDto;
 import io.github.twinklekhj.board.api.param.board.BoardSearchParam;
 import io.github.twinklekhj.board.api.param.board.BoardWriteParam;
-import io.github.twinklekhj.board.api.service.BoardService;
+import io.github.twinklekhj.board.api.service.board.BoardService;
 import io.github.twinklekhj.board.api.vo.PageVO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

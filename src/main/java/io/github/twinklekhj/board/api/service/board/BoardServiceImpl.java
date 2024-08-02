@@ -1,4 +1,4 @@
-package io.github.twinklekhj.board.api.service;
+package io.github.twinklekhj.board.api.service.board;
 
 import io.github.twinklekhj.board.api.dto.BoardDetailDto;
 import io.github.twinklekhj.board.api.dto.BoardListDto;

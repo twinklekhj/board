@@ -5,7 +5,7 @@ import io.github.twinklekhj.board.api.dto.UserDto;
 import io.github.twinklekhj.board.api.exception.UnauthorizedException;
 import io.github.twinklekhj.board.api.param.login.LoginParam;
 import io.github.twinklekhj.board.api.param.login.RegisterParam;
-import io.github.twinklekhj.board.api.service.UserService;
+import io.github.twinklekhj.board.api.service.user.UserService;
 import io.github.twinklekhj.board.jwt.Token;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

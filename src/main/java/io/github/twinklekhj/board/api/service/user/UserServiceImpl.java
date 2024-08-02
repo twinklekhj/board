@@ -1,4 +1,4 @@
-package io.github.twinklekhj.board.api.service;
+package io.github.twinklekhj.board.api.service.user;
 
 import io.github.twinklekhj.board.api.dto.UserDto;
 import io.github.twinklekhj.board.api.exception.DataNotFoundException;
