@@ -1,0 +1,7 @@
+# SSL Configuration
+server:
+  port: 443
+  ssl:
+    enabled: true
+    certificate: classpath:pem/local/localhost.pem
+    certificate-private-key: classpath:pem/local/localhost-key.pem
