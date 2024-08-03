@@ -19,7 +19,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
         QMember qMember = QMember.member;
 
         return Optional.ofNullable(queryFactory
-                .select(Projections.constructor(UserDto.class, qMember.id, qMember.memberId, qMember.name, qMember.email, qMember.role))
+                .select(Projections.constructor(UserDto.class, qMember.id, qMember.memberId, qMember.name, qMember.email, qMember.imageUrl, qMember.role))
                 .from(qMember)
                 .where(qMember.memberId.eq(id))
                 .fetchOne());

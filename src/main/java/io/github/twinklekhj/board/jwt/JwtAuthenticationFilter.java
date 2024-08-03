@@ -37,11 +37,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         List<String> list = Arrays.asList(
                 "/api/list",
                 "/api/authenticate",
-                "/api/register"
+                "/api/register",
+                "/api/csrf-token"
         );
 
         String uri = request.getRequestURI();
         if (list.contains(uri) || !uri.startsWith("/api")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if(request.getMethod().equals("GET") && uri.equals("/api/user/image")){
             filterChain.doFilter(request, response);
             return;
         }

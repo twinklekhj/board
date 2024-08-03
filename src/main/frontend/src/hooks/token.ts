@@ -36,7 +36,8 @@ export function useToken(): [boolean, boolean] {
                 dispatch(updateMember({
                     id: result.id,
                     name: result.name,
-                    email: result.email
+                    email: result.email,
+                    imageUrl: result.imageUrl,
                 }))
                 setLoading(false);
                 setAuthorized(true);

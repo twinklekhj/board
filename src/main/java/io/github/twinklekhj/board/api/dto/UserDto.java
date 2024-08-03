@@ -13,13 +13,15 @@ public class UserDto {
     private String userId;
     private String name;
     private String email;
+    private String imageUrl;
     private List<Role> roles;
 
-    public UserDto(Long id, String userId, String name, String email, Role role){
+    public UserDto(Long id, String userId, String name, String email, String imageUrl, Role role){
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.email = email;
+        this.imageUrl = imageUrl;
         this.roles = Role.getRoles(role);
     }
 }

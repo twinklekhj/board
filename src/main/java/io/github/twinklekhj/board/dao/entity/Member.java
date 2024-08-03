@@ -38,6 +38,9 @@ public class Member {
     @NonNull
     private String email;
 
+    @Column(length = 100)
+    private String imageUrl;
+
     @Column
     @Builder.Default
     private boolean enabled = true;

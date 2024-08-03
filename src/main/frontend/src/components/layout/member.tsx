@@ -14,6 +14,7 @@ const MemberComponent = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const name = useSelector((state: RootState) => state.member).name;
+    const imageUrl = useSelector((state: RootState) => state.member).imageUrl;
     const accessToken = useSelector((state: RootState) => state.token).accessToken;
     const bearerType = useSelector((state: RootState) => state.token).bearerType;
 
@@ -58,7 +59,7 @@ const MemberComponent = () => {
     return (
         <>
             <div className="member-container" aria-describedby={id} onClick={handleClick}>
-                <Avatar sx={{width: 30, height: 30}}/>
+                <Avatar sx={{width: 30, height: 30}} src={imageUrl}/>
                 <div>
                     <b>{name}</b>님
                 </div>

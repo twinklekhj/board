@@ -5,10 +5,16 @@ import io.github.twinklekhj.board.api.exception.DataNotFoundException;
 import io.github.twinklekhj.board.api.param.login.LoginParam;
 import io.github.twinklekhj.board.api.param.login.RegisterParam;
 import io.github.twinklekhj.board.jwt.Token;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 public interface UserService {
     ResponseEntity<Token> authenticate(LoginParam param);
     ResponseEntity<?> register(RegisterParam param);
     ResponseEntity<UserDto> findUserById(String id) throws DataNotFoundException;
+    ResponseEntity<?> uploadImage(String id, MultipartHttpServletRequest request, MultipartFile file);
+    void downloadImage(HttpServletRequest request, HttpServletResponse response, String id);
 }
