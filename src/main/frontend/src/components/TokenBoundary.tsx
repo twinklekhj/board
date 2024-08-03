@@ -1,7 +1,7 @@
 import React from 'react';
 import {useToken} from "@Hooks/token";
-import LoginPage from "@Pages/member/LoginPage";
-import LoadingPage from "@Pages/loading/LoadingPage";
+import LoadingPage from "@Pages/common/loading";
+import LoginPage from "@Pages/member/login";
 
 export interface TokenBoundaryProps {
     children: React.ReactNode;

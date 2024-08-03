@@ -1,17 +1,16 @@
 import React, {useEffect} from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import BoardPage from "@Pages/board/BoardPage";
-import SignupPage from "@Pages/member/SignupPage";
+import Signup from "@Pages/member/signup";
 import TokenBoundary from "@Components/TokenBoundary";
+import {Ajax} from "@Utils/ajax";
+import {useDispatch} from "react-redux";
+import {updateCsrfToken} from "@Store/slice/csrf";
+import TestPage from "@Pages/test/TestPage";
 import WritePage from "@Pages/board/WritePage";
 import UpdatePage from "@Pages/board/UpdatePage";
 import DetailPage from "@Pages/board/DetailPage";
-import MyPage from "@Pages/member/MyPage";
-import TestPage from "@Pages/test/TestPage";
-import {Ajax} from "@Utils/ajax";
-import {useDispatch} from "react-redux";
-import {initToken} from "@Store/slice/token";
-import {updateCsrfToken} from "@Store/slice/csrf";
+import MyPage from "@Pages/member/mypage";
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
@@ -22,38 +21,41 @@ const App: React.FC = () => {
         }).then(res => res.json())
         .then(result => {
             dispatch(updateCsrfToken(result));
+        }).catch(err => {
+            console.error(err)
         })
     }, []);
+
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/signup" element={<SignupPage />} />
-                <Route path="/test" element={<TestPage />} />
+                <Route path="/signup" element={<Signup/>}/>
+                <Route path="/test" element={<TestPage/>}/>
                 <Route path="/" element={
                     <TokenBoundary>
-                        <BoardPage />
+                        <BoardPage/>
                     </TokenBoundary>
-                } />
+                }/>
                 <Route path="/board/write" element={
                     <TokenBoundary>
-                        <WritePage />
+                        <WritePage/>
                     </TokenBoundary>
-                } />
+                }/>
                 <Route path="/board/:boardId/update" element={
                     <TokenBoundary>
-                        <UpdatePage />
+                        <UpdatePage/>
                     </TokenBoundary>
-                } />
+                }/>
                 <Route path="/board/:boardId" element={
                     <TokenBoundary>
-                        <DetailPage />
+                        <DetailPage/>
                     </TokenBoundary>
-                } />
+                }/>
                 <Route path="/me" element={
                     <TokenBoundary>
-                        <MyPage />
+                        <MyPage/>
                     </TokenBoundary>
-                } />
+                }/>
 
             </Routes>
         </BrowserRouter>

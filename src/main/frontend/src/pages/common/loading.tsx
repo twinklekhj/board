@@ -1,7 +1,7 @@
 import React from 'react';
 import {FadeLoader} from "react-spinners";
 
-const LoadingPage = () => {
+const Loading = () => {
     return (
         <div className={"loading-container"}>
             <div className={"loading-spinner"}>
@@ -14,4 +14,4 @@ const LoadingPage = () => {
     );
 };
 
-export default LoadingPage;
+export default Loading;

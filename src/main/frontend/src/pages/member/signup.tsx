@@ -5,10 +5,9 @@ import topImage from '@Images/search-left-tablet.svg'
 import bottomImage from '@Images/search-right-tablet.svg'
 import faviconImage from '@Images/favicon.png'
 import {useLogin} from "@Hooks/member";
-import {Button} from "@mui/material";
 
 const SignupPage = () => {
-    const {onInputChange, onSubmitClick, onSignupClick} = useLogin();
+    const {onInputChange, onSubmitClick} = useLogin();
     return (
         <div className={"login-container"}>
             <div className={"login-illustration"}>
