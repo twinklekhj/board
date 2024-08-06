@@ -1,9 +1,9 @@
 package io.github.twinklekhj.board.aop;
 
-import io.github.twinklekhj.board.api.exception.DataAlreadyExistException;
-import io.github.twinklekhj.board.api.exception.DataNotFoundException;
-import io.github.twinklekhj.board.api.exception.FileCannotUploadException;
-import io.github.twinklekhj.board.api.exception.UnauthorizedException;
+import io.github.twinklekhj.board.exception.DataAlreadyExistException;
+import io.github.twinklekhj.board.exception.DataNotFoundException;
+import io.github.twinklekhj.board.exception.FileCannotUploadException;
+import io.github.twinklekhj.board.exception.UnauthorizedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
