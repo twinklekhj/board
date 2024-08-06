@@ -38,6 +38,7 @@ export function useToken(): [boolean, boolean] {
                     name: result.name,
                     email: result.email,
                     imageUrl: result.imageUrl,
+                    userId: result.userId
                 }))
                 setLoading(false);
                 setAuthorized(true);
