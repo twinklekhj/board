@@ -20,6 +20,7 @@ public class BoardDetailDto {
     private final String title;
     private long writerId;
     private String writer;
+    private String writerImage;
     private String content;
     private int hits;
     private boolean visible;

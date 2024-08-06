@@ -32,7 +32,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         if (param.getAll() != null && !param.getAll().isEmpty()){
             BooleanBuilder orBuilder = new BooleanBuilder(board.title.like("%" + param.getAll() + "%"));
             orBuilder.or(board.content.like("%" + param.getAll() + "%"));
-            orBuilder.or(qMember.memberId.like("%" + param.getAll() + "%"));
+            orBuilder.or(qMember.name.like("%" + param.getAll() + "%"));
 
             builder.and(orBuilder);
         }
@@ -44,7 +44,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
                 builder.and(board.content.like("%" + param.getContent() + "%"));
             }
             if (param.getWriter() != null && !param.getWriter().isEmpty()) {
-                builder.and(qMember.memberId.like("%" + param.getWriter() + "%"));
+                builder.and(qMember.name.like("%" + param.getWriter() + "%"));
             }
         }
 
@@ -71,7 +71,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 
         return queryFactory
                 .select(Projections.constructor(BoardListDto.class,
-                        qBoard.id, qBoard.title, qMember.memberId, qBoard.hits, qBoard.visible, qBoard.createDate, qBoard.editDate)
+                        qBoard.id, qBoard.title, qMember.name, qBoard.hits, qBoard.visible, qBoard.createDate, qBoard.editDate)
                 )
                 .from(qBoard)
                 .where(getCondition(param, true))
@@ -107,7 +107,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         QMember qMember = QMember.member;
         return Optional.ofNullable(queryFactory
                 .select(Projections.constructor(BoardDetailDto.class,
-                        qBoard.id, qBoard.title, qMember.id, qMember.memberId, qBoard.content, qBoard.hits, qBoard.visible, qBoard.createDate, qBoard.editDate))
+                        qBoard.id, qBoard.title, qMember.id, qMember.name, qMember.imageUrl, qBoard.content, qBoard.hits, qBoard.visible, qBoard.createDate, qBoard.editDate))
                 .from(qBoard)
                 .where(qBoard.id.eq(id))
                 .leftJoin(qMember)

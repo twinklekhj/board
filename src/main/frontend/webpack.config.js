@@ -4,6 +4,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require("path");
 const webpack = require("webpack");
 
+const ASSET_PATH = process.env.ASSET_PATH || '/';
+
 module.exports = (env, argv) => {
     const prod = argv.mode === "production";
 
@@ -101,6 +103,10 @@ module.exports = (env, argv) => {
                     {from: 'public/robots.txt', to: 'robots.txt'},
                     {from: 'public/manifest.json', to: 'manifest.json'},
                 ],
+            }),
+            // 코드에서 환경 변수를 안전하게 사용할 수 있습니다.
+            new webpack.DefinePlugin({
+                'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH),
             }),
             new CleanWebpackPlugin(),
         ],

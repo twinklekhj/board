@@ -16,6 +16,9 @@ spring:
       enabled: true
   mvc:
     static-path-pattern: /**
+  servlet:
+    multipart:
+      max-file-size: 10MB
 server:
   port: 8080
 logging:

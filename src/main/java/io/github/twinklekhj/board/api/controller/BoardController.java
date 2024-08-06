@@ -24,7 +24,7 @@ public class BoardController {
     @ApiMapping(order = 10, description = "[게시판 관리] 게시판 목록 조회")
     public ResponseEntity<PageVO<BoardListDto>> board(@RequestBody BoardSearchParam param) {
         log.info("param: {}", param);
-        return ResponseEntity.ok(boardService.findBy(param));
+        return boardService.findBy(param);
     }
 
     @PutMapping(path = "/api/board")
