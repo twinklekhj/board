@@ -1,4 +1,4 @@
-package io.github.twinklekhj.board.api.param.login;
+package io.github.twinklekhj.board.api.param.user;
 
 import io.github.twinklekhj.board.dao.entity.Member;
 import jakarta.validation.constraints.NotNull;

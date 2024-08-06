@@ -1,6 +1,6 @@
 package io.github.twinklekhj.board.login;
 
-import io.github.twinklekhj.board.api.param.login.LoginParam;
+import io.github.twinklekhj.board.api.param.user.LoginParam;
 import io.github.twinklekhj.board.dao.entity.Member;
 import io.github.twinklekhj.board.dao.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;

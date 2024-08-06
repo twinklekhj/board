@@ -1,4 +1,4 @@
-package io.github.twinklekhj.board.api.param.login;
+package io.github.twinklekhj.board.api.param.user;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
