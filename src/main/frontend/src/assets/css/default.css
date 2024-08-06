@@ -331,6 +331,35 @@ body:has(.loading-container) .loading-container .loading-spinner,
   align-items: center;
   gap: 0.5rem;
 }
+.member-page .member-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+.member-page .member-profile .member-action {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.member-page .member-profile .member-action > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+.member-page .member-profile .member-action input,
+.member-page .member-profile .member-action label:has(> input) {
+  width: 300px;
+  max-width: 50vw;
+}
+.member-page .member-profile .member-action input[type="file"] {
+  display: none;
+}
 /* Markdown Editor */
 .w-md-editor {
   --md-editor-font-family: var(--fs-family);

@@ -326,7 +326,28 @@ html, body, #root {
   }
 
 }
+.member-page {
+  .member-profile {
+    .flex-box(@flex-direction: column, @justify-content: center, @gap: 2rem);
 
+    & .member-action {
+      .flex-box(@flex-direction: column, @align-items: flex-start);
+
+      & > div {
+        .flex-box();
+      }
+
+      input, label:has(> input) {
+        width: 300px;
+        max-width: 50vw;
+      }
+      & input[type="file"] {
+        display: none;
+      }
+    }
+  }
+
+}
 /* Markdown Editor */
 .w-md-editor {
   --md-editor-font-family: var(--fs-family);

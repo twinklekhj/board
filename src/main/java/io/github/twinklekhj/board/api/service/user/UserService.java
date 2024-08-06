@@ -1,12 +1,10 @@
 package io.github.twinklekhj.board.api.service.user;
 
 import io.github.twinklekhj.board.api.dto.UserDto;
-import io.github.twinklekhj.board.api.exception.DataNotFoundException;
-import io.github.twinklekhj.board.api.param.login.LoginParam;
-import io.github.twinklekhj.board.api.param.login.RegisterParam;
 import io.github.twinklekhj.board.exception.DataNotFoundException;
 import io.github.twinklekhj.board.api.param.user.LoginParam;
 import io.github.twinklekhj.board.api.param.user.RegisterParam;
+import io.github.twinklekhj.board.api.param.user.UserChangeInfoParam;
 import io.github.twinklekhj.board.jwt.Token;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,4 +18,6 @@ public interface UserService {
     ResponseEntity<UserDto> findUserById(String id) throws DataNotFoundException;
     ResponseEntity<?> uploadImage(String id, MultipartHttpServletRequest request, MultipartFile file);
     void downloadImage(HttpServletRequest request, HttpServletResponse response, String id);
+
+    ResponseEntity<?> changeInfo(String username, UserChangeInfoParam param);
 }

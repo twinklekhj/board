@@ -2,10 +2,10 @@ package io.github.twinklekhj.board.api.controller;
 
 import io.github.twinklekhj.board.annotation.ApiMapping;
 import io.github.twinklekhj.board.api.dto.UserDto;
-import io.github.twinklekhj.board.api.exception.UnauthorizedException;
-import io.github.twinklekhj.board.api.param.login.LoginParam;
-import io.github.twinklekhj.board.api.param.login.RegisterParam;
 import io.github.twinklekhj.board.exception.UnauthorizedException;
+import io.github.twinklekhj.board.api.param.user.LoginParam;
+import io.github.twinklekhj.board.api.param.user.RegisterParam;
+import io.github.twinklekhj.board.api.param.user.UserChangeInfoParam;
 import io.github.twinklekhj.board.api.service.user.UserService;
 import io.github.twinklekhj.board.jwt.Token;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,6 +48,11 @@ public class UserController {
     @PatchMapping(path = "/api/user/image")
     public ResponseEntity<?> uploadImage(MultipartHttpServletRequest request, @RequestParam("file") MultipartFile file, @AuthenticationPrincipal UserDetails user) {
         return userService.uploadImage(user.getUsername(), request, file);
+    }
+
+    @PatchMapping(path = "/api/user/info")
+    public ResponseEntity<?> patchName(@AuthenticationPrincipal UserDetails user, @RequestBody UserChangeInfoParam param) {
+        return userService.changeInfo(user.getUsername(), param);
     }
 
     @GetMapping(path = "/api/user/image")

@@ -1,12 +1,10 @@
 package io.github.twinklekhj.board.api.service.user;
 
 import io.github.twinklekhj.board.api.dto.UserDto;
-import io.github.twinklekhj.board.api.exception.DataNotFoundException;
-import io.github.twinklekhj.board.api.param.login.LoginParam;
-import io.github.twinklekhj.board.api.param.login.RegisterParam;
 import io.github.twinklekhj.board.exception.DataNotFoundException;
 import io.github.twinklekhj.board.api.param.user.LoginParam;
 import io.github.twinklekhj.board.api.param.user.RegisterParam;
+import io.github.twinklekhj.board.api.param.user.UserChangeInfoParam;
 import io.github.twinklekhj.board.dao.entity.Member;
 import io.github.twinklekhj.board.dao.repository.member.MemberRepository;
 import io.github.twinklekhj.board.jwt.Token;
@@ -101,5 +99,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public void downloadImage(HttpServletRequest request, HttpServletResponse response, String id) {
         FileUtil.downloadFile(request, response, USER_IMAGE_PATH, id + ".png");
+    }
+
+    @Override
+    public ResponseEntity<?> changeInfo(String id, UserChangeInfoParam param) {
+        Optional<Member> memberOptional = memberRepository.findByMemberId(id);
+        if (memberOptional.isPresent()) {
+            Member member = memberOptional.get();
+            if(param.getName() != null){
+                member.setName(param.getName());
+            }
+            if(param.getEmail() != null) {
+                member.setEmail(param.getEmail());
+            }
+
+            member.setEditDate(LocalDateTime.now());
+            memberRepository.save(member);
+
+            return ResponseEntity.ok("성공적으로 수정되었습니다.");
+        }
+
+        throw new DataNotFoundException("이용자를 찾을 수 없습니다.");
     }
 }
