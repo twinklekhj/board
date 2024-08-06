@@ -2,8 +2,8 @@ package io.github.twinklekhj.board.api.service.board;
 
 import io.github.twinklekhj.board.api.dto.BoardDetailDto;
 import io.github.twinklekhj.board.api.dto.BoardListDto;
-import io.github.twinklekhj.board.api.exception.DataNotFoundException;
-import io.github.twinklekhj.board.api.exception.UnauthorizedException;
+import io.github.twinklekhj.board.exception.DataNotFoundException;
+import io.github.twinklekhj.board.exception.UnauthorizedException;
 import io.github.twinklekhj.board.api.param.board.BoardSearchParam;
 import io.github.twinklekhj.board.api.param.board.BoardWriteParam;
 import io.github.twinklekhj.board.api.vo.PageVO;
@@ -28,8 +28,8 @@ public class BoardServiceImpl implements BoardService {
     private final MemberRepository memberRepository;
 
     @Override
-    public PageVO<BoardListDto> findBy(BoardSearchParam param) {
-        return PageVO.builder(boardRepository.findBy(param)).build();
+    public ResponseEntity<PageVO<BoardListDto>> findBy(BoardSearchParam param) {
+        return ResponseEntity.ok(PageVO.builder(boardRepository.findBy(param)).build());
     }
 
     @Override

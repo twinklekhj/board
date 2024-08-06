@@ -1,4 +1,4 @@
-package io.github.twinklekhj.board.api.exception;
+package io.github.twinklekhj.board.exception;
 
 public class UnauthorizedException extends RuntimeException {
     public UnauthorizedException() {

@@ -1,6 +1,6 @@
 package io.github.twinklekhj.board.utils;
 
-import io.github.twinklekhj.board.api.exception.FileCannotUploadException;
+import io.github.twinklekhj.board.exception.FileCannotUploadException;
 import io.github.twinklekhj.board.api.vo.FileVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

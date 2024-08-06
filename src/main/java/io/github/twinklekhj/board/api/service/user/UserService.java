@@ -4,6 +4,7 @@ import io.github.twinklekhj.board.api.dto.UserDto;
 import io.github.twinklekhj.board.api.exception.DataNotFoundException;
 import io.github.twinklekhj.board.api.param.login.LoginParam;
 import io.github.twinklekhj.board.api.param.login.RegisterParam;
+import io.github.twinklekhj.board.exception.DataNotFoundException;
 import io.github.twinklekhj.board.jwt.Token;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
