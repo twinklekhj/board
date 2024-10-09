@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApiMapping {
+public @interface ApiOperation {
     int order() default 0;
 
     String description() default "";

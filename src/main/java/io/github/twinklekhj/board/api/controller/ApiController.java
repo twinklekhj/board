@@ -1,6 +1,6 @@
 package io.github.twinklekhj.board.api.controller;
 
-import io.github.twinklekhj.board.api.dto.ApiInfoDto;
+import io.github.twinklekhj.board.api.dto.ApiGroupDto;
 import io.github.twinklekhj.board.api.service.api.ApiService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class ApiController {
     private final ApiService apiService;
 
     @GetMapping("/api/list")
-    public ResponseEntity<List<ApiInfoDto>> getApiList() {
+    public ResponseEntity<List<ApiGroupDto>> getApiList() {
         return apiService.getApiList();
     }
 

@@ -8,8 +8,7 @@ import java.util.List;
 @Builder
 @Getter
 @AllArgsConstructor
-public class ApiInfoDto {
-    private String category;
+public class ApiOperationDto {
     private int order;
     private String[] path;
     private String description;
@@ -20,12 +19,12 @@ public class ApiInfoDto {
     @Builder.Default
     private boolean isAuthenticated = false;
 
-    public static <T> ApiInfoDtoBuilder builder(){
-        return new ApiInfoDtoBuilder();
+    public static <T> ApiOperationDtoBuilder builder(){
+        return new ApiOperationDtoBuilder();
     }
 
-    public static class ApiInfoDtoBuilder{
-        public ApiInfoDtoBuilder method(RequestMethod... method){
+    public static class ApiOperationDtoBuilder{
+        public ApiOperationDtoBuilder method(RequestMethod... method){
             this.method = method;
             return this;
         }
