@@ -11,6 +11,7 @@ export interface Board {
     content?: string;
     writerId?: number;
     writer?: string;
+    writerImageUrl?: string;
     visible?: boolean;
     hits?: number;
     createDate?: string;
@@ -21,6 +22,7 @@ export interface PaginationParam {
     pageIndex: number;
     pageSize: number;
 }
+
 export interface BoardSearchParam {
     title?: string;
     content?: string;
@@ -48,7 +50,7 @@ export function useBoardList(pagination: PaginationParam, param: BoardSearchPara
             const res = await Ajax({
                 url: '/api/boards',
                 method: 'POST',
-                token: { accessToken, bearerType },
+                token: {accessToken, bearerType},
                 body: {
                     pageIdx: pagination.pageIndex + 1,
                     pageSize: pagination.pageSize,
@@ -57,6 +59,7 @@ export function useBoardList(pagination: PaginationParam, param: BoardSearchPara
                 csrf: csrfToken
             });
             const result = await res.json();
+
             setData(result.items);
             setPageCount(result.pageCnt);
         } catch (err) {
@@ -96,7 +99,7 @@ export function useBoardDetail(boardId: string | undefined) {
             title: '게시글 삭제',
             text: '게시글을 삭제하시겠습니까?<br>한번 삭제되면 복구가 불가능합니다.',
             onHide: result => {
-                if(result.isConfirmed) {
+                if (result.isConfirmed) {
                     Ajax({
                         url: `/api/board/${boardId}`,
                         method: 'DELETE',
@@ -140,6 +143,7 @@ export function useBoardDetail(boardId: string | undefined) {
             .then(res => res.json())
             .then(res => {
                 setBoard(res);
+                console.log(res)
             })
             .catch(error => {
                 AlertUtil.error({
@@ -156,7 +160,7 @@ export function useBoardDetail(boardId: string | undefined) {
         fetchData();
     }, [fetchData]);
 
-    return { board, memberId, onUpdateClick, onDeleteClick };
+    return {board, memberId, onUpdateClick, onDeleteClick};
 }
 
 export function useBoardAdd() {
@@ -241,12 +245,12 @@ export function useBoardAdd() {
         return true;
     };
 
-    return { title, content, isShow, onTitleChange, onContentChange, onShowChange, onPublishClick };
+    return {title, content, isShow, onTitleChange, onContentChange, onShowChange, onPublishClick};
 }
 
 export function useBoardUpdate() {
     const navigate = useNavigate();
-    const { boardId } = useParams();
+    const {boardId} = useParams();
 
     const accessToken = useSelector((state: RootState) => state.token.accessToken);
     const bearerType = useSelector((state: RootState) => state.token.bearerType);
@@ -352,12 +356,12 @@ export function useBoardUpdate() {
                 });
             }
         })
-        .catch(error => {
-            AlertUtil.error({
-                title: '에러 발생!',
-                text: error,
-            })
-        });
+            .catch(error => {
+                AlertUtil.error({
+                    title: '에러 발생!',
+                    text: error,
+                })
+            });
     };
 
     return {

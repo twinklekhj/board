@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { Board, BoardSearchParam, useBoardList } from "@Hooks/board";
+import React, {useEffect, useMemo, useState} from 'react';
+import {Board, BoardSearchParam, useBoardList} from "@Hooks/board";
 import {
     MaterialReactTable,
     type MRT_ColumnDef,
@@ -7,7 +7,7 @@ import {
     MRT_SortingState,
     useMaterialReactTable
 } from 'material-react-table';
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {FaLock} from "react-icons/fa6";
 
 const BoardList: React.FC = () => {
@@ -24,34 +24,30 @@ const BoardList: React.FC = () => {
     // 정렬 옵션
     const [sorting, setSorting] = useState<MRT_SortingState>([]);
 
-    const [ data, pageCount, isLoading, isError ] = useBoardList(pagination, params);
+    const [data, pageCount, isLoading, isError] = useBoardList(pagination, params);
 
     // 검색 조건 생성
     useEffect(() => {
-        let updatedParams = params;
-        if (columnFilters.length > 0){
-            updatedParams = {
-                ...updatedParams,
-                ...Object.fromEntries(columnFilters.map(filter => [filter.id, filter.value]))
-            };
+        const updatedParams: BoardSearchParam = {
+            ...Object.fromEntries(columnFilters.map(filter => [filter.id, filter.value])),
+            ...(sorting.length > 0 && {
+                sortField: sorting[0].id,
+                sortDir: sorting[0].desc ? 'desc' : 'asc'
+            })
+        };
+
+        // 조건이 변경된 경우에만 setParams 호출
+        if (JSON.stringify(params) !== JSON.stringify(updatedParams)) {
+            setParams(updatedParams);
         }
-        if (sorting.length > 0) {
-            updatedParams = {
-                ...updatedParams,
-                ...{
-                    sortField: sorting[0].id,
-                    sortDir: sorting[0].desc ? 'desc' : 'asc'
-                }
-            };
-        }
-        setParams(updatedParams);
-    }, [columnFilters, sorting, params]);
+    }, [columnFilters, sorting]);
 
 
     const columns = useMemo<MRT_ColumnDef<Board>[]>(
         () => [
-            { accessorKey: 'id', header: '글번호', size: 100, enableColumnFilter: false },
-            { accessorKey: 'title', header: '제목', size: 500, Cell: ({renderedCellValue, row}) => (
+            {accessorKey: 'id', header: '글번호', size: 100, enableColumnFilter: false},
+            {
+                accessorKey: 'title', header: '제목', size: 500, Cell: ({renderedCellValue, row}) => (
                     <>
                         <span className={"mr-1"}>{!row.original.visible ? <FaLock/> : null}</span>
                         <span>{renderedCellValue}</span>
@@ -59,8 +55,8 @@ const BoardList: React.FC = () => {
                 )
             },
             {accessorKey: 'writer', header: '글쓴이', size: 150},
-            { accessorKey: 'createDate', header: '날짜', size: 150, enableColumnFilter: false },
-            { accessorKey: 'hits', header: '조회수', size: 100, enableColumnFilter: false },
+            {accessorKey: 'createDate', header: '날짜', size: 150, enableColumnFilter: false},
+            {accessorKey: 'hits', header: '조회수', size: 100, enableColumnFilter: false},
         ],
         []
     );
@@ -71,7 +67,7 @@ const BoardList: React.FC = () => {
         manualFiltering: true,
         onColumnFiltersChange: setColumnFilters,
         manualPagination: true,
-        rowCount: data.length,
+        rowCount: pageCount * pagination.pageSize,
         manualSorting: true,
         onSortingChange: setSorting,
         muiPaginationProps: {
@@ -104,7 +100,7 @@ const BoardList: React.FC = () => {
         }),
     });
 
-    return <MaterialReactTable table={table} />;
+    return <MaterialReactTable table={table}/>;
 };
 
 export default BoardList;

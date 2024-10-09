@@ -42,7 +42,7 @@ public class TokenProvider {
     public Token generateAccessToken(Authentication authentication) {
         String authorities = authentication.getAuthorities()
                 .stream().map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining());
+                .collect(Collectors.joining(","));
         Date now = new Date();
         Date tokenExpiresIn = new Date(now.getTime() + tokenProperties.getTokenExpireTime());
 
@@ -50,6 +50,7 @@ public class TokenProvider {
                 .setSubject(authentication.getName())
                 .claim(tokenProperties.getAuthorizeKey(), authorities)
                 .setExpiration(tokenExpiresIn)
+                .setIssuedAt(now)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 

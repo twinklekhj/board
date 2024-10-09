@@ -19,7 +19,7 @@ const DetailPage = () => {
                     <h1 className={"post-header"}>{board?.title}</h1>
                     <div className={"post-meta"}>
                         <div className={"post-flex"}>
-                            <Avatar sx={{width: "30px", height: "30px"}}/>
+                            <Avatar sx={{width: "30px", height: "30px"}} src={board?.writerImageUrl}/>
                             {board?.writer + ' ㆍ ' + TimeUtil.getLastAgo(board?.createDate)}
                         </div>
                         <div className={"post-flex"}>
@@ -42,7 +42,7 @@ const DetailPage = () => {
                         <MDEditor.Markdown source={board?.content}/>
                     </div>
                     <div className={"post-divider"}></div>
-                    <div>Comments</div>
+                    {/*<div>Comments</div>*/}
                 </div>
             </div>
         </>

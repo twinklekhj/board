@@ -8,8 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -25,7 +23,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final TokenProperties tokenProperties;
+    /**
+     * @description 토큰이 필요하지 않은 API URL 목록
+     */
+    private final static List<String> EXCEPTED_API_LIST = Arrays.asList(
+            "/api/list",
+            "/api/authenticate",
+            "/api/register",
+            "/api/csrf-token"
+    );
     private final TokenProvider tokenProvider;
 
     @Override
@@ -33,20 +39,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        // 토큰이 필요하지 않은 API URL에 대해서 배열로 구성
-        List<String> list = Arrays.asList(
-                "/api/list",
-                "/api/authenticate",
-                "/api/register",
-                "/api/csrf-token"
-        );
 
         String uri = request.getRequestURI();
-        if (list.contains(uri) || !uri.startsWith("/api")) {
+        if (EXCEPTED_API_LIST.contains(uri) || !uri.startsWith("/api")) {
             filterChain.doFilter(request, response);
             return;
         }
-        if(request.getMethod().equals("GET") && uri.equals("/api/user/image")){
+        if (request.getMethod().equals("GET") && uri.equals("/api/user/image")) {
             filterChain.doFilter(request, response);
             return;
         }

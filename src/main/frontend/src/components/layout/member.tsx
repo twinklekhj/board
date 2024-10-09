@@ -1,5 +1,5 @@
 import React from 'react';
-import {Avatar, Box, Button, Fade} from "@mui/material";
+import {Avatar, Button, Fade} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@Store/index";
 import Popper from "@mui/material/Popper/BasePopper";
@@ -9,6 +9,7 @@ import AlertUtil from "@Utils/alert";
 import {useNavigate} from "react-router-dom";
 import {FaCircleUser} from "react-icons/fa6";
 import {LuLogOut} from "react-icons/lu";
+import {initCsrfToken} from "@Store/slice/csrf";
 
 const MemberComponent = () => {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ const MemberComponent = () => {
             title: '로그아웃',
             text: '로그아웃 하시겠습니까?',
             onHide: result => {
-                if(result.isConfirmed) {
+                if (result.isConfirmed) {
                     Ajax({
                         url: '/api/logout',
                         method: 'GET',
@@ -46,8 +47,10 @@ const MemberComponent = () => {
                             bearerType: bearerType
                         }
                     }).then(res => {
-                        if(res.ok) {
+                        if (res.ok) {
+                            dispatch(initCsrfToken())
                             dispatch(initToken());
+                            window.location.reload();
                         }
                     })
                 }
@@ -68,8 +71,8 @@ const MemberComponent = () => {
                 {({TransitionProps}) => (
                     <Fade {...TransitionProps} timeout={350}>
                         <div className="member-tooltip">
-                            <div><Button onClick={goMyPage} startIcon={<FaCircleUser />}>마이페이지</Button></div>
-                            <div><Button onClick={logout} startIcon={<LuLogOut />}>로그아웃</Button></div>
+                            <div><Button onClick={goMyPage} startIcon={<FaCircleUser/>}>마이페이지</Button></div>
+                            <div><Button onClick={logout} startIcon={<LuLogOut/>}>로그아웃</Button></div>
                         </div>
                     </Fade>
                 )}
