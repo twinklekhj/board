@@ -1,5 +1,7 @@
 package io.github.twinklekhj.board.jwt;
 
+import io.github.twinklekhj.board.login.MemberDetailService;
+import io.github.twinklekhj.board.login.MemberDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
@@ -9,8 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -26,11 +26,13 @@ import java.util.stream.Collectors;
 public class TokenProvider {
     private final TokenProperties tokenProperties;
     private final Key key;
+    private final MemberDetailService memberDetailService;
 
-    public TokenProvider(TokenProperties tokenProperties) {
+    public TokenProvider(TokenProperties tokenProperties, MemberDetailService memberDetailService) {
         this.tokenProperties = tokenProperties;
         SecretKey key = Keys.hmacShaKeyFor(tokenProperties.getSecretKey().getBytes());
         this.key = Keys.hmacShaKeyFor(key.getEncoded());
+        this.memberDetailService = memberDetailService;
     }
 
     /**
@@ -46,6 +48,7 @@ public class TokenProvider {
         Date now = new Date();
         Date tokenExpiresIn = new Date(now.getTime() + tokenProperties.getTokenExpireTime());
 
+        log.info("principal: {}, name: {}", authentication.getPrincipal(), authentication.getName());
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(tokenProperties.getAuthorizeKey(), authorities)
@@ -79,8 +82,8 @@ public class TokenProvider {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+        MemberDetails memberDetails = (MemberDetails) memberDetailService.loadUserByUsername(claims.getSubject());
+        return new UsernamePasswordAuthenticationToken(memberDetails, memberDetails.getPassword(), authorities);
     }
 
     /**

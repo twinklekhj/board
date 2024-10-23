@@ -89,7 +89,7 @@ export function useBoardDetail(boardId: string | undefined) {
     const [board, setBoard] = useState<Board | null>(null);
 
     const onUpdateClick = () => {
-        navigate(`/board/${board?.id}/update`);
+        navigate(`/boards/${board?.id}/update`);
     };
 
     const onDeleteClick = () => {
@@ -101,7 +101,7 @@ export function useBoardDetail(boardId: string | undefined) {
             onHide: result => {
                 if (result.isConfirmed) {
                     Ajax({
-                        url: `/api/board/${boardId}`,
+                        url: `/api/boards/${boardId}`,
                         method: 'DELETE',
                         token: {
                             accessToken: accessToken,
@@ -132,7 +132,7 @@ export function useBoardDetail(boardId: string | undefined) {
         if (!boardId) return;
 
         Ajax({
-            url: `/api/board/${boardId}`,
+            url: `/api/boards/${boardId}`,
             method: 'GET',
             token: {
                 accessToken,
@@ -202,7 +202,7 @@ export function useBoardAdd() {
         }
 
         Ajax({
-            url: '/api/board',
+            url: '/api/boards',
             method: 'PUT',
             body: {
                 title: title,
@@ -263,7 +263,7 @@ export function useBoardUpdate() {
     const fetchData = useMemo(() => {
         return () => {
             Ajax({
-                url: `/api/board/${boardId}`,
+                url: `/api/boards/${boardId}`,
                 method: 'GET',
                 token: {
                     accessToken: accessToken,
@@ -334,7 +334,7 @@ export function useBoardUpdate() {
         }
 
         Ajax({
-            url: `/api/board/${boardId}`,
+            url: `/api/boards/${boardId}`,
             method: 'PATCH',
             body: {
                 title: title,

@@ -5,25 +5,24 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import io.github.twinklekhj.board.dao.entity.Board;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class BoardDetailDto {
     private final long id;
     private final String title;
-    private long writerId;
+    private Long writerId;
     private String writer;
     private String writerImageUrl;
     private String content;
-    private int hits;
-    private boolean visible;
+    private Integer hits;
+    private Boolean visible;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

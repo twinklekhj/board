@@ -2,6 +2,7 @@ package io.github.twinklekhj.board.api.dto;
 
 import lombok.*;
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

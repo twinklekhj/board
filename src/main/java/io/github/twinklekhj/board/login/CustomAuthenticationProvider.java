@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -23,20 +22,20 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = encoder.encode(authentication.getCredentials().toString());
 
         log.info("접속 아이디: {}", username);
-        UserDetails member = memberDetailService.loadUserByUsername(username);
-        if (member == null) {
+        MemberDetails memberDetails = (MemberDetails) memberDetailService.loadUserByUsername(username);
+        if (memberDetails == null) {
             throw new UsernameNotFoundException("일치하는 사용자 아이디가 없습니다.");
         }
 
-        if (!member.isEnabled()) {
+        if (!memberDetails.isEnabled()) {
             throw new DisabledException("아직 승인되지 않은 계정입니다.<br>관리자에게 문의하시기 바랍니다.");
-        } else if (!member.isAccountNonExpired()) {
+        } else if (!memberDetails.isAccountNonExpired()) {
             throw new LockedException("로그인 시도 가능 횟수를 초과했습니다.<br>관리자에게 문의하시기 바랍니다.");
-        } else if (!this.encoder.matches(member.getPassword(), password)) {
+        } else if (!this.encoder.matches(memberDetails.getPassword(), password)) {
             throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
         }
 
-        return new UsernamePasswordAuthenticationToken(member, password, member.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(memberDetails, password, memberDetails.getAuthorities());
     }
 
     @Override

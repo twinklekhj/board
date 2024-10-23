@@ -2,6 +2,7 @@ package io.github.twinklekhj.board.config;
 
 import io.github.twinklekhj.board.jwt.JwtAuthenticationFilter;
 import io.github.twinklekhj.board.login.CustomAuthenticationProvider;
+import io.github.twinklekhj.board.login.MemberDetailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +32,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, CustomAuthenticationProvider authenticationProvider) throws Exception {
+    public AuthenticationManager authenticationManager(HttpSecurity http, CustomAuthenticationProvider authenticationProvider, MemberDetailService memberDetailService) throws Exception {
         AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
         builder.authenticationProvider(authenticationProvider);
         return builder.build();

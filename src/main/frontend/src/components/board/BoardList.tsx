@@ -92,7 +92,7 @@ const BoardList: React.FC = () => {
         onPaginationChange: setPagination,
         muiTableBodyRowProps: ({row}) => ({
             onClick: (event) => {
-                navigate(`/board/${row.original.id}`);
+                navigate(`/boards/${row.original.id}`);
             },
             sx: {
                 cursor: 'pointer', //you might want to change the cursor too when adding an onClick

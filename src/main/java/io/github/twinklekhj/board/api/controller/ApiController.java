@@ -20,7 +20,7 @@ public class ApiController {
 
     @GetMapping("/api/list")
     public ResponseEntity<List<ApiGroupDto>> getApiList() {
-        return apiService.getApiList();
+        return ResponseEntity.ok(apiService.getApiList());
     }
 
     @GetMapping("/api/csrf-token")

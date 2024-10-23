@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 const BoardPage = () => {
     const navigate = useNavigate();
     const onWriteButtonClick = () => {
-        navigate("/board/write");
+        navigate("/boards/write");
     }
 
     return (

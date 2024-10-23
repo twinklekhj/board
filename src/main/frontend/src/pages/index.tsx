@@ -36,17 +36,17 @@ const App: React.FC = () => {
                         <BoardPage/>
                     </TokenBoundary>
                 }/>
-                <Route path="/board/write" element={
+                <Route path="/boards/write" element={
                     <TokenBoundary>
                         <WritePage/>
                     </TokenBoundary>
                 }/>
-                <Route path="/board/:boardId/update" element={
+                <Route path="/boards/:boardId/update" element={
                     <TokenBoundary>
                         <UpdatePage/>
                     </TokenBoundary>
                 }/>
-                <Route path="/board/:boardId" element={
+                <Route path="/boards/:boardId" element={
                     <TokenBoundary>
                         <DetailPage/>
                     </TokenBoundary>

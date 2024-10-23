@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'io.github.twinklekhj'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 
 java {
     toolchain {
@@ -54,57 +54,60 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+/**
+ * QueryDSL Setting
+ * 1. QClass 생성 위치 지정
+ * 2. java source 목록에 QClass 위치 추가
+ * 3. gradle clean 시 QClass 디렉터리 삭제
+ */
 def generated = 'src/main/generated'
-// querydsl QClass 파일 생성 위치를 지정
 tasks.withType(JavaCompile).configureEach {
-	options.getGeneratedSourceOutputDirectory().set(file(generated))
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
 }
-// java source set 에 querydsl QClass 위치 추가
 sourceSets {
-	main.java.srcDirs += [ generated ]
+    main.java.srcDirs += [ generated ]
 }
-// gradle clean 시에 QClass 디렉토리 삭제
 clean {
-	delete file(generated)
+    delete file(generated)
 }
 
-//def frontendDir = "$project.projectDir/src/main/frontend"
-//sourceSets {
-//    main {
-//        resources { srcDir("$project.projectDir/src/main/resources") }
-//    }
-//}
-//
-//processResources {
-//	dependsOn "copyReactBuildFiles"
-//	duplicatesStrategy = DuplicatesStrategy.INCLUDE
-//}
-//tasks.register('installReact', Exec) {
-//	workingDir("$frontendDir")
-//	inputs.dir("$frontendDir")
-//	group = BasePlugin.BUILD_GROUP
-//	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-//		commandLine "npm.cmd", "audit", "fix"
-//		commandLine 'npm.cmd', 'install'
-//	} else {
-//		commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
-//	}
-//}
-//
-//tasks.register('buildReact', Exec) {
-//	dependsOn "installReact"
-//	workingDir "$frontendDir"
-//	inputs.dir "$frontendDir"
-//	group = BasePlugin.BUILD_GROUP
-//	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-//		commandLine "npm.cmd", "run-script", "build"
-//	} else {
-//		commandLine "npm", "run-script", "build"
-//	}
-//}
-//
-//tasks.register('copyReactBuildFiles', Copy) {
-//	dependsOn "buildReact"
-//	from "$frontendDir/build"
-//	into "$project.projectDir/src/main/resources/static"
-//}
+def frontendDir = "$project.projectDir/src/main/frontend"
+sourceSets {
+    main {
+        resources { srcDir("$project.projectDir/src/main/resources") }
+    }
+}
+
+processResources {
+	dependsOn "copyReactBuildFiles"
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+tasks.register('installReact', Exec) {
+	workingDir("$frontendDir")
+	inputs.dir("$frontendDir")
+	group = BasePlugin.BUILD_GROUP
+	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+		commandLine "npm.cmd", "audit", "fix"
+		commandLine 'npm.cmd', 'install'
+	} else {
+		commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
+	}
+}
+
+tasks.register('buildReact', Exec) {
+	dependsOn "installReact"
+	workingDir "$frontendDir"
+	inputs.dir "$frontendDir"
+	group = BasePlugin.BUILD_GROUP
+	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+		commandLine "npm.cmd", "run-script", "build"
+	} else {
+		commandLine "npm", "run-script", "build"
+	}
+}
+
+tasks.register('copyReactBuildFiles', Copy) {
+	dependsOn "buildReact"
+	from "$frontendDir/build"
+	into "$project.projectDir/src/main/resources/static"
+}

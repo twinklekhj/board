@@ -1,12 +1,12 @@
 package io.github.twinklekhj.board.api.service.user;
 
 import io.github.twinklekhj.board.api.dto.UserDto;
-import io.github.twinklekhj.board.exception.DataNotFoundException;
 import io.github.twinklekhj.board.api.param.user.LoginParam;
 import io.github.twinklekhj.board.api.param.user.RegisterParam;
 import io.github.twinklekhj.board.api.param.user.UserChangeInfoParam;
 import io.github.twinklekhj.board.dao.entity.Member;
 import io.github.twinklekhj.board.dao.repository.member.MemberRepository;
+import io.github.twinklekhj.board.exception.DataNotFoundException;
 import io.github.twinklekhj.board.jwt.Token;
 import io.github.twinklekhj.board.jwt.TokenProvider;
 import io.github.twinklekhj.board.login.CustomAuthenticationHandler;
@@ -26,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -47,14 +46,19 @@ public class UserServiceImpl implements UserService {
             );
             Token token = tokenProvider.generateAccessToken(authentication);
             loginHandler.onAuthenticationSuccess(authentication);
+
             return ResponseEntity.ok(token);
-        } catch (AuthenticationException e) {
+        }
+        // 로그인 실패시
+        catch (AuthenticationException e) {
             int failureCnt = loginHandler.onAuthenticationFailure(param, e);
-            StringBuilder builder = new StringBuilder(e.getMessage());
+
+            StringBuilder builder = new StringBuilder("로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
             if (failureCnt > 0) {
                 builder.append(String.format("<br>로그인 시도 횟수: %d/5", failureCnt));
                 builder.append("<br>로그인 시도 횟수가 초과하면 계정이 잠기니 유의해주세요!");
             }
+
             throw new BadCredentialsException(builder.toString());
         }
     }
@@ -87,7 +91,6 @@ public class UserServiceImpl implements UserService {
             Optional<String> uploadNameOptional = FileUtil.uploadFile(USER_IMAGE_PATH, file, member.getMemberId());
             if (uploadNameOptional.isPresent()) {
                 member.setImageUrl("/api/user/image?id=" + member.getMemberId());
-                member.setEditDate(LocalDateTime.now());
                 memberRepository.save(member);
 
                 return ResponseEntity.ok("성공적으로 수정되었습니다.");
@@ -106,14 +109,13 @@ public class UserServiceImpl implements UserService {
         Optional<Member> memberOptional = memberRepository.findByMemberId(id);
         if (memberOptional.isPresent()) {
             Member member = memberOptional.get();
-            if(param.getName() != null){
+            if (param.getName() != null) {
                 member.setName(param.getName());
             }
-            if(param.getEmail() != null) {
+            if (param.getEmail() != null) {
                 member.setEmail(param.getEmail());
             }
 
-            member.setEditDate(LocalDateTime.now());
             memberRepository.save(member);
 
             return ResponseEntity.ok("성공적으로 수정되었습니다.");

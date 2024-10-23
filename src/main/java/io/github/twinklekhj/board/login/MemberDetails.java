@@ -32,6 +32,10 @@ public class MemberDetails implements UserDetails {
         return authorities;
     }
 
+    public Long getId(){
+        return member.getId();
+    }
+
     public List<Role> getRoles() {
         return Arrays.stream(Role.values()).filter(r -> r.ordinal() <= member.getRole().ordinal()).collect(Collectors.toList());
     }
