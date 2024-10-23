@@ -6,7 +6,6 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +21,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-@Slf4j
 public class TokenProvider {
     private final TokenProperties tokenProperties;
     private final Key key;
@@ -48,7 +46,6 @@ public class TokenProvider {
         Date now = new Date();
         Date tokenExpiresIn = new Date(now.getTime() + tokenProperties.getTokenExpireTime());
 
-        log.info("principal: {}, name: {}", authentication.getPrincipal(), authentication.getName());
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(tokenProperties.getAuthorizeKey(), authorities)
