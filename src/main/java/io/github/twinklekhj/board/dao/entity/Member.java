@@ -8,16 +8,18 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.github.twinklekhj.board.login.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
-@Builder
-@Entity(name = "tbl_user")
-@Data
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@Entity(name = "tbl_user")
 @SequenceGenerator(name = "SEQ_USER_GENERATOR", sequenceName = "SEQ_USER", initialValue = 1, allocationSize = 1)
-public class Member {
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USER_GENERATOR")
     private Long id;
@@ -53,19 +55,6 @@ public class Member {
     @Column(name = "failure_cnt")
     @Builder.Default
     private Integer failureCnt = 0;
-
-    @Column(name = "create_date")
-    @Builder.Default
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime createDate = LocalDateTime.now();
-
-    @Column(name = "edit_date")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime editDate;
 
     @Column(name = "access_date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)

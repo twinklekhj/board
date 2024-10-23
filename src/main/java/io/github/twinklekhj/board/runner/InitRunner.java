@@ -34,14 +34,14 @@ public class InitRunner implements ApplicationRunner {
         List<Board> boards = new ArrayList<>();
         for (int i = 1; i <= 100; i++) {
             boards.add(Board.builder()
-                    .member(member)
+                    .memberId(member.getId())
                     .title("Test " + i)
                     .content("Content " + i).build());
         }
         boardRepository.saveAll(boards);
 
         Board posting = Board.builder()
-                .member(member)
+                .memberId(member.getId())
                 .title("Lorem Ipsum")
                 .content("""
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet volutpat tellus. Fusce nec massa eu ex porttitor porttitor at sit amet dui. Nulla scelerisque ipsum magna, ac condimentum leo luctus vitae. Pellentesque consectetur in nunc sed commodo. Interdum et malesuada fames ac ante ipsum primis in faucibus. In a lacinia turpis, ut aliquet justo. Suspendisse consequat mauris ac ligula placerat suscipit. Praesent vitae porta diam, semper ultrices quam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In velit tortor, lobortis a sollicitudin non, tincidunt et felis. Suspendisse scelerisque sollicitudin tortor. Sed porta, quam et dictum interdum, nisi neque feugiat lacus, et suscipit odio neque venenatis dolor. Sed scelerisque pulvinar ante, eu ullamcorper ligula suscipit congue. Etiam accumsan dapibus ante, non venenatis metus viverra eget. In luctus ligula elit, quis rutrum purus ultricies id.</p>
